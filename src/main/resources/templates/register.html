@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        function checkBpwd() {
+            if ($("#username").val() == "") {
+                alert("用户名必须输入！");
+                $("#username").focus();
+                return false;
+            } else if ($("#password").val() == "") {
+                alert("密码必须输入！");
+                $("#password").focus();
+                return false;
+            } else if ($("#password").val() != $("#repassword").val()) {
+                alert("两次密码不一致！");
+                $("#password").focus();
+                return false;
+            } else if ($("#realname").val() == "") {
+                alert("别名必须输入！");
+                $("#username").focus();
+                return false;
+            } else if ($("#invitationcode").val() == "") {
+                alert("邀请码必须输入！");
+                $("#username").focus();
+                return false;
+            } else {
+                document.myform.submit();
+            }
+        }
+    </script>
+<body>
+<div>
+    <h2 align="center">用户注册</h2>
+</div>
+<br>
+<br>
+<div align="center">
+    <form th:action="@{/register}" name="myform" method="post" th:object="${userDomain}" role="form">
+        <div th:if="${param.failed != null}">
+            <p><font color="red">注册失败</font></p>
+            <br>
+            <br>
+            <div><a th:href="@{/toRegister}">重试</a></div>
+        </div>
+        <div th:unless="${param.failed != null}">
+            <div>
+                <label>用户名</label>
+                <input type="text" placeholder="请输入您的用户名" th:field="*{username}"/>
+            </div>
+
+            <div>
+                <label>密码</label>
+                <input type="password" placeholder="请输入您的密码" th:field="*{password}"/>
+            </div>
+
+            <div>
+                <label>确认密码</label>
+                <input type="password" placeholder="请输入您的密码" th:field="*{repassword}"/>
+            </div>
+
+            <div>
+                <label>用户别名</label>
+                <input type="text" placeholder="请输入您的备注名称" th:field="*{realname}"/>
+            </div>
+
+            <div>
+                <label>邀请码</label>
+                <input type="text" placeholder="请输入邀请码" th:field="*{invitationcode}"/>
+            </div>
+
+            <div>
+                <button type="button" onclick="checkBpwd()">注册</button>
+                <button type="reset">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
