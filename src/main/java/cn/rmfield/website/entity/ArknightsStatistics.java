@@ -10,24 +10,34 @@ import java.util.List;
 @Table(name="arknights_statistics")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class ArknightsStatistics implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(columnDefinition = "INT not null default 0")
     private Integer total;
+    @Column(columnDefinition = "INT not null default 0")
     private Integer sixCount;
+    @Column(columnDefinition = "DOUBLE not null default 0")
     private Double sixRate;
+    @Column(columnDefinition = "INT not null default 0")
     private Integer fiveCount;
+    @Column(columnDefinition = "DOUBLE not null default 0")
     private Double fiveRate;
+    @Column(columnDefinition = "INT not null default 0")
     private Integer fourCount;
+    @Column(columnDefinition = "DOUBLE not null default 0")
     private Double fourRate;
+    @Column(columnDefinition = "INT not null default 0")
     private Integer threeCount;
+    @Column(columnDefinition = "DOUBLE not null default 0")
     private Double threeRate;
+
     @OneToOne(
-            optional = false,
-            fetch = FetchType.LAZY,
+            optional = true,
+            fetch = FetchType.EAGER,
             targetEntity = RfUser.class,
-            mappedBy = "arknightsStatistics",
+            mappedBy = "arknights_statistics",
             cascade = CascadeType.ALL
     )
     private RfUser rfUser;

@@ -19,17 +19,17 @@ public class GuideController {
 
     @GetMapping("/")
     public String index() {
-        return "/index";
+        return "index";
     }
 
     @RequestMapping("/toLogin")
     public String toLogin() {
-        return "/login";
+        return "login";
     }
 
     @RequestMapping("/toRegister")
     public String toRegister(@ModelAttribute("userDomain") RfUser userDomain) {
-        return "/register";
+        return "register";
     }
 
     @RequestMapping("/register")
@@ -39,7 +39,7 @@ public class GuideController {
 
     @RequestMapping("/login")
     public String login() {
-        return "/login";
+        return "login";
     }
 
     @RequestMapping("/user/loginSuccess")
@@ -52,7 +52,7 @@ public class GuideController {
         return userService.main(model);
     }
 
-    @RequestMapping("/logout")
+    @RequestMapping("logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
         return userService.logout(request,response);
     }

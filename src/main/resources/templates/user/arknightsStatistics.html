@@ -5,8 +5,53 @@
     <title>明日方舟抽卡数据统计</title>
 </head>
 <body>
-<div>
-    <h3>数据页面</h3>
+<div align="center">
+    <div><h3>数据页面</h3></div>
+    <div>
+        <span>先去官网登录，然后<a href="https://as.hypergryph.com/user/info/v1/token_by_cookie" target="_blank">点这里获取token</a></span>
+    </div>
+    <br><br>
+    <div>
+        <form th:action="@{/user/ArknightsStatisstics}" method="get">
+            <label>输入token<input type="text" name="token"></label><br><br>
+            <input type="submit" value="查询">
+        </form>
+
+    </div>
+    <div>
+        <table>
+            <tbody>
+            <tr>
+                <td>六星数量：<span th:text="${sixCount}"></span></td>
+            </tr>
+            <tr>
+                <td>五星数量：<span th:text="${fiveCount}"></span></td>
+            </tr>
+            <tr>
+                <td>四星数量：<span th:text="${fourCount}"></span></td>
+            </tr>
+            <tr>
+                <td>三星数量：<span th:text="${threeCount}"></span></td>
+            </tr>
+            <tr>
+                <td>总数：<span th:text="${total}"></span></td>
+            </tr>
+            <tr><td><br></td></tr>
+            <tr>
+                <td>六星占比：<span th:text="${sixRate}"></span>%</td>
+            </tr>
+            <tr>
+                <td>五星占比：<span th:text="${fiveRate}"></span>%</td>
+            </tr>
+            <tr>
+                <td>四星占比：<span th:text="${fourRate}"></span>%</td>
+            </tr>
+            <tr>
+                <td>三星占比：<span th:text="${threeRate}"></span>%</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

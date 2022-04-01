@@ -32,7 +32,7 @@ public class RfUser implements Serializable {
     //方舟抽卡数据
     @OneToOne(
             optional = false,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             targetEntity = ArknightsStatistics.class,
             cascade = CascadeType.ALL
     )
@@ -42,7 +42,7 @@ public class RfUser implements Serializable {
             unique = true
     )
     @JsonIgnore
-    private ArknightsStatistics arknightsStatistics;
+    private ArknightsStatistics arknights_statistics;
 
     @Transient
     private String repassword;
@@ -92,9 +92,9 @@ public class RfUser implements Serializable {
         this.invitationcode = invitationcode;
     }
     public ArknightsStatistics getArknightsStatistics() {
-        return arknightsStatistics;
+        return arknights_statistics;
     }
-    public void setArknightsStatistics(ArknightsStatistics arknightsStatistics) {
-        this.arknightsStatistics = arknightsStatistics;
+    public void setArknightsStatistics(ArknightsStatistics arknights_statistics) {
+        this.arknights_statistics = arknights_statistics;
     }
 }

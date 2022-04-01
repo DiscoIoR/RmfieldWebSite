@@ -10,11 +10,14 @@ import java.io.Serializable;
 @Table(name="arknights_statistics_history")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class ArknightsStatisticsHistory implements Serializable{
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String ts;
+    private Integer ts;    //Unix时间戳,timestamp
+    private String name;
+    private Integer rarity;
+    private Boolean isNew;
     @ManyToOne(
             cascade = CascadeType.ALL,
             optional = false
@@ -31,11 +34,29 @@ public class ArknightsStatisticsHistory implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-    public String getTs() {
+    public Integer getTs() {
         return ts;
     }
-    public void setTs(String ts) {
+    public void setTs(Integer ts) {
         this.ts = ts;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public Integer getRarity() {
+        return rarity;
+    }
+    public void setRarity(Integer rarity) {
+        this.rarity = rarity;
+    }
+    public Boolean getIsNew() {
+        return isNew;
+    }
+    public void setIsNew(Boolean isNew) {
+        this.isNew = isNew;
     }
     public ArknightsStatistics getArknightsStatistics() {
         return arknightsStatistics;
