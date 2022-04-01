@@ -22,7 +22,7 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
     private ArknightsStatisticsHistoryRepository ashRepo;
 
     @Override
-    public void updateData(String token) {
+    public Boolean updateData(String token) {
         //从数据库提取之前的抽卡数据
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         RfUser rfUser = userRepository.findByUsername(name);
@@ -42,7 +42,13 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         //获取新的抽卡数据并保存
         ArknightsStatisticsDataHandler asdh = new ArknightsStatisticsDataHandler(asd);
         ArknightsStatisticsData asdNew = asdh.dataInquireAndFiltrate(token);
-        List<ArknightsStatisticsDataEach> asdesNew = asdNew.getArknightsStatisticsDataEaches();
+        List<ArknightsStatisticsDataEach> asdesNew = null;
+        try {
+            asdesNew = asdNew.getArknightsStatisticsDataEaches();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         for(ArknightsStatisticsDataEach asdeNew:asdesNew){
             ArknightsStatisticsHistory ashNew = new ArknightsStatisticsHistory();
             ashNew.setTs(asdeNew.getTs());
@@ -65,6 +71,7 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         as.setThreeRate(asdNew.getThreeRate());
         as.setTotal(asdNew.getTotal());
         asRepo.save(as);
+        return true;
     }
 
     @Override

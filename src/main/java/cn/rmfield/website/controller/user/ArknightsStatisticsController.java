@@ -17,9 +17,16 @@ public class ArknightsStatisticsController {
 
     @GetMapping("/user/ArknightsStatisstics")
     public String arknightsStatisstics(@RequestParam(value = "token",required = false)String token,Model model){
+        //更新数据
         if(!(Objects.equals(token, "") || token == null)){
-            akService.updateData(token);
+            Boolean tokenUpdateSuccess =  akService.updateData(token);
+            if (!tokenUpdateSuccess){
+                model.addAttribute("tokenUpdateSuccess","更新数据失败");
+            }else {
+                model.addAttribute("tokenUpdateSuccess","更新数据成功");
+            }
         }
+        //查询数据
         Map<String,Object> data = akService.getData();
         model.addAttribute("sixCount",data.get("sixCount"));
         model.addAttribute("fiveCount",data.get("fiveCount"));

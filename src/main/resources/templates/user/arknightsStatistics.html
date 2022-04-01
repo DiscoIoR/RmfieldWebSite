@@ -13,10 +13,11 @@
     <br><br>
     <div>
         <form th:action="@{/user/ArknightsStatisstics}" method="get">
-            <label>输入token<input type="text" name="token"></label><br><br>
+            <label>输入token<input type="text" name="token"></label>
+            <div><span th:text="${tokenUpdateSuccess}"></span></div><br>
             <input type="submit" value="查询">
         </form>
-
+        <br>
     </div>
     <div>
         <table>
