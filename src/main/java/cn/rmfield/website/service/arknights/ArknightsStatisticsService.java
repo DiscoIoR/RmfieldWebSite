@@ -1,6 +1,4 @@
-package cn.rmfield.website.service.arknights_data;
-
-import org.springframework.ui.Model;
+package cn.rmfield.website.service.arknights;
 
 import java.util.Map;
 

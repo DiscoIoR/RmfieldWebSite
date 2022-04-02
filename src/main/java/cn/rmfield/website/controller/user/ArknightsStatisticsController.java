@@ -1,6 +1,6 @@
 package cn.rmfield.website.controller.user;
 
-import cn.rmfield.website.service.arknights_data.ArknightsStatisticsService;
+import cn.rmfield.website.service.arknights.ArknightsStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,8 +1,9 @@
 package cn.rmfield.website.service.guide;
 
 import cn.rmfield.website.entity.*;
-import cn.rmfield.website.repository.ArknightsStatisticsHistoryRepository;
-import cn.rmfield.website.repository.ArknightsStatisticsRepostiory;
+import cn.rmfield.website.entity.arknights.ArknightsStatistics;
+import cn.rmfield.website.repository.arknights.ArknightsGachaHistoryRepository;
+import cn.rmfield.website.repository.arknights.ArknightsStatisticsRepostiory;
 import cn.rmfield.website.repository.InvitationCodeRepository;
 import cn.rmfield.website.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class GuideServiceImpl implements GuideService {
     @Autowired
     private ArknightsStatisticsRepostiory arknightsStatisticsRepostiory;
     @Autowired
-    private ArknightsStatisticsHistoryRepository arknightsStatisticsHistoryRepository;
+    private ArknightsGachaHistoryRepository arknightsGachaHistoryRepository;
 
     //注册
     @Override
@@ -61,9 +62,11 @@ public class GuideServiceImpl implements GuideService {
         authorityList.add(auth3);
         userDomain.setAuthorityList(authorityList);
 
-        //设置方舟寻访记录
+        //设置方舟统计记录
         ArknightsStatistics arknightsStatistics = new ArknightsStatistics();
-        arknightsStatistics.setTotal(0);
+        arknightsStatistics.setArknights_nickName("default");
+        arknightsStatistics.setArknights_uid("default");
+        arknightsStatistics.setTotalCount(0);
         arknightsStatistics.setSixCount(0);
         arknightsStatistics.setFiveCount(0);
         arknightsStatistics.setFourCount(0);

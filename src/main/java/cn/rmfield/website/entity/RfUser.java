@@ -1,5 +1,6 @@
 package cn.rmfield.website.entity;
 
+import cn.rmfield.website.entity.arknights.ArknightsStatistics;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
