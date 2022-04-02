@@ -21,6 +21,8 @@
                         $("#fourRate").html(data.fourRate);
                         $("#threeRate").html(data.threeRate);
                         $("#Total").html(data.Total);
+                        $("#grossIncome").html(data.grossIncome);
+                        $("#grossExpenses").html(data.grossExpenses);
                     }
                 }
             })
@@ -31,6 +33,7 @@
     </script>
     <script type="text/javascript" th:inline="javascript">
         function updateData(){
+            $("#tokenUpdateSuccess").html("数据更新中...");
             var token = $("#token").val();
             $.ajax({
                 type:'get',
@@ -41,10 +44,10 @@
                 success:function (data){
                     if (data!=null){
                         $("#tokenUpdateSuccess").html(data);
+                        getData();
                     }
                 }
             })
-            getData();
         }
     </script>
 </head>
@@ -79,6 +82,9 @@
             <tr><td>五星占比：<span id="fiveRate"></span>%</td></tr>
             <tr><td>四星占比：<span id="fourRate"></span>%</td></tr>
             <tr><td>三星占比：<span id="threeRate"></span>%</td></tr>
+            <tr><td><br></td></tr>
+            <tr><td>源石收入：<span id="grossIncome"></span></td></tr>
+            <tr><td>源石支出：<span id="grossExpenses"></span></td></tr>
             </tbody>
         </table>
     </div>

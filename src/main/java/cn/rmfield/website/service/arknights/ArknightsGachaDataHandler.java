@@ -7,7 +7,7 @@ import com.alibaba.fastjson.TypeReference;
 
 import java.util.*;
 
-public class ArknightsStatisticsGachaDataHandler {
+public class ArknightsGachaDataHandler {
     private Integer totalCount;
     private Integer sixCount;
     private Integer fiveCount;
@@ -18,24 +18,24 @@ public class ArknightsStatisticsGachaDataHandler {
     private Double fourRate;
     private Double threeRate;
     private Set<Integer> tses;
-    private List<ArknightsStatisticsGachaDataEach> gachaDataEachList;
+    private List<ArknightsGachaDataEach> gachaDataEachList;
 
-    public ArknightsStatisticsGachaDataHandler(ArknightsStatisticsGachaData arknightsStatisticsGachaData) {
-        this.totalCount = arknightsStatisticsGachaData.getTotalCount();
-        this.sixCount = arknightsStatisticsGachaData.getSixCount();
-        this.fiveCount = arknightsStatisticsGachaData.getFiveCount();
-        this.fourCount = arknightsStatisticsGachaData.getFourCount();
-        this.threeCount = arknightsStatisticsGachaData.getThreeCount();
-        this.sixRate = arknightsStatisticsGachaData.getSixRate();
-        this.fiveRate = arknightsStatisticsGachaData.getFiveRate();
-        this.fourRate = arknightsStatisticsGachaData.getFourRate();
-        this.threeRate = arknightsStatisticsGachaData.getThreeRate();
-        this.tses = arknightsStatisticsGachaData.getTses();
-        this.gachaDataEachList = arknightsStatisticsGachaData.getArknightsStatisticsDataEaches();
+    public ArknightsGachaDataHandler(ArknightsGachaData arknightsGachaData) {
+        this.totalCount = arknightsGachaData.getTotalCount();
+        this.sixCount = arknightsGachaData.getSixCount();
+        this.fiveCount = arknightsGachaData.getFiveCount();
+        this.fourCount = arknightsGachaData.getFourCount();
+        this.threeCount = arknightsGachaData.getThreeCount();
+        this.sixRate = arknightsGachaData.getSixRate();
+        this.fiveRate = arknightsGachaData.getFiveRate();
+        this.fourRate = arknightsGachaData.getFourRate();
+        this.threeRate = arknightsGachaData.getThreeRate();
+        this.tses = arknightsGachaData.getTses();
+        this.gachaDataEachList = arknightsGachaData.getArknightsStatisticsDataEaches();
     }
 
     //获取并筛选所需数据
-    public ArknightsStatisticsGachaData gachaHandler(String token) {
+    public ArknightsGachaData gachaHandler(String token) {
         //请求地址
         String url = "https://ak.hypergryph.com/user/api/inquiry/gacha";
 
@@ -50,7 +50,6 @@ public class ArknightsStatisticsGachaDataHandler {
         int pageMax = totalPageNum / 10 + 1;
 
         //查询每页
-
         for (int currentPage = 1; currentPage <= pageMax; currentPage++) {
             String result = ArknightsDataRequest.getDataFromRemote(url,token,currentPage);
             int code = (Integer) JSON.parseObject(result).get("code");
@@ -67,7 +66,7 @@ public class ArknightsStatisticsGachaDataHandler {
                 String pool = (String) jsonListEach.get("pool");
                 JSONArray jsonChars = new JSONArray();
                 if (!tses.contains(ts)) {
-                    jsonChars.addAll(jsonListEach.getJSONArray("chars"));
+                    jsonChars = jsonListEach.getJSONArray("chars");
                     List<Map<String, Object>> times = JSON.parseObject(jsonChars.toString(), new TypeReference<>() {
                     });
                     for (Map<String, Object> eachTime : times) {
@@ -76,8 +75,8 @@ public class ArknightsStatisticsGachaDataHandler {
                         Integer rarity = (Integer) eachTime.get("rarity");
                         Boolean isNew = (Boolean) eachTime.get("isNew");
                         //打包单抽数据
-                        ArknightsStatisticsGachaDataEach asde = new ArknightsStatisticsGachaDataEach(ts,pool,name,rarity,isNew);
-                        gachaDataEachList.add(asde);
+                        ArknightsGachaDataEach gachaDataEach = new ArknightsGachaDataEach(ts,pool,name,rarity,isNew);
+                        gachaDataEachList.add(gachaDataEach);
                         switch (rarity) {
                             case 5 -> sixCount++;
                             case 4 -> fiveCount++;
@@ -95,7 +94,7 @@ public class ArknightsStatisticsGachaDataHandler {
         fourRate = fourCount / totalCount.doubleValue();
         threeRate = threeCount / totalCount.doubleValue();
 
-        return new ArknightsStatisticsGachaData(
+        return new ArknightsGachaData(
                 totalCount,
                 sixCount, fiveCount, fourCount, threeCount,
                 sixRate, fiveRate, fourRate, threeRate,

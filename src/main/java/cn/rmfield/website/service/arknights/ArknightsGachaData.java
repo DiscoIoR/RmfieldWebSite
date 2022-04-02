@@ -2,14 +2,14 @@ package cn.rmfield.website.service.arknights;
 
 import java.util.*;
 
-class ArknightsStatisticsGachaDataEach {
+class ArknightsGachaDataEach {
     private Integer ts;
     private String pool;
     private String name;
     private Integer rarity;
     private Boolean isNew;
 
-    public ArknightsStatisticsGachaDataEach(Integer ts, String pool, String name, Integer rarity, Boolean isNew) {
+    public ArknightsGachaDataEach(Integer ts, String pool, String name, Integer rarity, Boolean isNew) {
         this.ts = ts;
         this.pool = pool;
         this.name = name;
@@ -49,7 +49,7 @@ class ArknightsStatisticsGachaDataEach {
     }
 }
 
-public class ArknightsStatisticsGachaData {
+public class ArknightsGachaData {
     private Integer totalCount;
     private Integer sixCount;
     private Integer fiveCount;
@@ -60,9 +60,9 @@ public class ArknightsStatisticsGachaData {
     private Double fourRate;
     private Double threeRate;
     private Set<Integer> tses;
-    private List<ArknightsStatisticsGachaDataEach> arknightsStatisticsGachaDataEaches;
+    private List<ArknightsGachaDataEach> arknightsGachaDataEaches;
 
-    public ArknightsStatisticsGachaData(
+    public ArknightsGachaData(
             Integer totalCount,
             Integer sixCount, Integer fiveCount, Integer fourCount, Integer threeCount,
             Double sixRate, Double fiveRate, Double fourRate, Double threeRate,
@@ -77,14 +77,14 @@ public class ArknightsStatisticsGachaData {
         this.fourRate = fourRate;
         this.threeRate = threeRate;
         this.tses = tses;
-        this.arknightsStatisticsGachaDataEaches = new ArrayList<>();
+        this.arknightsGachaDataEaches = new ArrayList<>();
     }
 
-    public ArknightsStatisticsGachaData(
+    public ArknightsGachaData(
             Integer totalCount,
             Integer sixCount, Integer fiveCount, Integer fourCount, Integer threeCount,
             Double sixRate, Double fiveRate, Double fourRate, Double threeRate,
-            List<ArknightsStatisticsGachaDataEach> arknightsStatisticsGachaDataEaches) {
+            List<ArknightsGachaDataEach> arknightsGachaDataEaches) {
         this.totalCount = totalCount;
         this.sixCount = sixCount;
         this.fiveCount = fiveCount;
@@ -95,10 +95,8 @@ public class ArknightsStatisticsGachaData {
         this.fourRate = fourRate;
         this.threeRate = threeRate;
         this.tses = new HashSet<>();
-        this.arknightsStatisticsGachaDataEaches = arknightsStatisticsGachaDataEaches;
+        this.arknightsGachaDataEaches = arknightsGachaDataEaches;
     }
-
-
 
     public Integer getTotalCount() {
         return totalCount;
@@ -160,10 +158,10 @@ public class ArknightsStatisticsGachaData {
     public void setTses(Set<Integer> tses) {
         this.tses = tses;
     }
-    public List<ArknightsStatisticsGachaDataEach> getArknightsStatisticsDataEaches() {
-        return arknightsStatisticsGachaDataEaches;
+    public List<ArknightsGachaDataEach> getArknightsStatisticsDataEaches() {
+        return arknightsGachaDataEaches;
     }
-    public void setArknightsStatisticsDataEaches(List<ArknightsStatisticsGachaDataEach> arknightsStatisticsGachaDataEaches) {
-        this.arknightsStatisticsGachaDataEaches = arknightsStatisticsGachaDataEaches;
+    public void setArknightsStatisticsDataEaches(List<ArknightsGachaDataEach> arknightsGachaDataEaches) {
+        this.arknightsGachaDataEaches = arknightsGachaDataEaches;
     }
 }
