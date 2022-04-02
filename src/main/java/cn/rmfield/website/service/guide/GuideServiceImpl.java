@@ -34,6 +34,12 @@ public class GuideServiceImpl implements GuideService {
     //注册
     @Override
     public String register(RfUser userDomain) {
+        //校验用户名唯一性
+        RfUser findUserResult = userRepository.findByUsername(userDomain.getUsername());
+        if(findUserResult != null){
+            return "redirect:/toRegister?failed";
+        }
+
         //检验邀请码
         InvitationCode invitationCode = invitationCodeRepository.findByCode(userDomain.getInvitationcode());
         if (invitationCode == null) {
@@ -75,6 +81,9 @@ public class GuideServiceImpl implements GuideService {
         arknightsStatistics.setFiveRate(0D);
         arknightsStatistics.setFourRate(0D);
         arknightsStatistics.setThreeRate(0D);
+        arknightsStatistics.setDiamondGrossIncome(0);
+        arknightsStatistics.setDiamondGrossExpenses(0);
+        arknightsStatistics.setTotalCost(0);
         arknightsStatisticsRepostiory.save(arknightsStatistics);
         userDomain.setArknightsStatistics(arknightsStatistics);
 
