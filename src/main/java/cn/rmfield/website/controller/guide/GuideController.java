@@ -1,7 +1,7 @@
-package cn.rmfield.website.controller;
+package cn.rmfield.website.controller.guide;
 
 import cn.rmfield.website.entity.RfUser;
-import cn.rmfield.website.service.UserService;
+import cn.rmfield.website.service.guide.GuideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class GuideController {
     @Autowired
-    private UserService userService;
+    private GuideService guideService;
 
     @GetMapping("/")
     public String index() {
@@ -34,7 +34,7 @@ public class GuideController {
 
     @RequestMapping("/register")
     public String register(@ModelAttribute("userDomain") RfUser userDomain) {
-        return userService.register(userDomain);
+        return guideService.register(userDomain);
     }
 
     @RequestMapping("/login")
@@ -44,21 +44,21 @@ public class GuideController {
 
     @RequestMapping("/user/loginSuccess")
     public String loginSuccess(Model model){
-        return userService.loginSuccess(model);
+        return guideService.loginSuccess(model);
     }
 
     @RequestMapping("/admin/main")
     public String main(Model model){
-        return userService.main(model);
+        return guideService.main(model);
     }
 
     @RequestMapping("logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
-        return userService.logout(request,response);
+        return guideService.logout(request,response);
     }
 
     @RequestMapping("/deniedAccess")
     public String deniedAccess(Model model){
-        return userService.deniedAccess(model);
+        return guideService.deniedAccess(model);
     }
 }

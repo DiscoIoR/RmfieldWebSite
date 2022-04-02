@@ -78,10 +78,7 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
     public Map<String,Object> getData() {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         RfUser rfUser = userRepository.findByUsername(name);
-        Integer uid = rfUser.getId();
-        ArknightsStatistics as = asRepo.findByRfUser_id(uid);
-        Integer asid = as.getId();
-        List<ArknightsStatisticsHistory>  ashes = ashRepo.findByArknightsStatistics_id(asid);
+        ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
         Map<String,Object> data = new HashMap<>();
         data.put("sixCount",as.getSixCount());
         data.put("fiveCount",as.getFiveCount());
@@ -91,7 +88,7 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         data.put("fiveRate",as.getFiveRate()*100);
         data.put("fourRate",as.getFourRate()*100);
         data.put("threeRate",as.getThreeRate()*100);
-        data.put("total",as.getTotal());
+        data.put("Total",as.getTotal());
         return data;
     }
 }

@@ -3,6 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>明日方舟抽卡数据统计</title>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        function getData(){
+            $.ajax({
+                type:'get',
+                dataType:'json',
+                url:'/user/api/ArknightsStatistics/getData',
+                success:function (data){
+                    if(data!=null){
+                        $("#sixConut").html(data.sixCount);
+                        $("#fiveCount").html(data.fiveCount);
+                        $("#fourCount").html(data.fourCount);
+                        $("#threeCount").html(data.threeCount);
+                        $("#sixRate").html(data.sixRate);
+                        $("#fiveRate").html(data.fiveRate);
+                        $("#fourRate").html(data.fourRate);
+                        $("#threeRate").html(data.threeRate);
+                        $("#Total").html(data.Total);
+                    }
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(getData());
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        function updateData(){
+            var token = $("#token").val();
+            $.ajax({
+                type:'get',
+                dataType:'text',
+                contentType:'text/plain',
+                data:{token:token},
+                url:'/user/api/ArknightsStatistics/updateData',
+                success:function (data){
+                    if (data!=null){
+                        $("#tokenUpdateSuccess").html(data);
+                    }
+                }
+            })
+            getData();
+        }
+    </script>
 </head>
 <body>
 <div align="center">
@@ -12,44 +56,26 @@
     </div>
     <br><br>
     <div>
-        <form th:action="@{/user/ArknightsStatisstics}" method="get">
-            <label>输入token<input type="text" name="token"></label>
-            <div><span th:text="${tokenUpdateSuccess}"></span></div><br>
-            <input type="submit" value="查询">
+        <form action="">
+            <label><input type="text" id="token" th:placeholder="在此输入token"></label>
+            <div><span id="tokenUpdateSuccess"></span></div>
+            <button type="button" onclick="updateData()">更新数据</button>
         </form>
         <br>
     </div>
     <div>
         <table>
             <tbody>
-            <tr>
-                <td>六星数量：<span th:text="${sixCount}"></span></td>
-            </tr>
-            <tr>
-                <td>五星数量：<span th:text="${fiveCount}"></span></td>
-            </tr>
-            <tr>
-                <td>四星数量：<span th:text="${fourCount}"></span></td>
-            </tr>
-            <tr>
-                <td>三星数量：<span th:text="${threeCount}"></span></td>
-            </tr>
-            <tr>
-                <td>总数：<span th:text="${total}"></span></td>
-            </tr>
+            <tr><td>六星数量：<span id="sixConut"></span></td></tr>
+            <tr><td>五星数量：<span id="fiveCount"></span></td></tr>
+            <tr><td>四星数量：<span id="fourCount"></span></td></tr>
+            <tr><td>三星数量：<span id="threeCount"></span></td></tr>
+            <tr><td>总数：<span id="Total"></span></td></tr>
             <tr><td><br></td></tr>
-            <tr>
-                <td>六星占比：<span th:text="${sixRate}"></span>%</td>
-            </tr>
-            <tr>
-                <td>五星占比：<span th:text="${fiveRate}"></span>%</td>
-            </tr>
-            <tr>
-                <td>四星占比：<span th:text="${fourRate}"></span>%</td>
-            </tr>
-            <tr>
-                <td>三星占比：<span th:text="${threeRate}"></span>%</td>
-            </tr>
+            <tr><td>六星占比：<span id="sixRate"></span>%</td></tr>
+            <tr><td>五星占比：<span id="fiveRate"></span>%</td></tr>
+            <tr><td>四星占比：<span id="fourRate"></span>%</td></tr>
+            <tr><td>三星占比：<span id="threeRate"></span>%</td></tr>
             </tbody>
         </table>
     </div>

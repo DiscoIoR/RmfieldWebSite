@@ -1,4 +1,4 @@
-package cn.rmfield.website.service;
+package cn.rmfield.website.service.guide;
 
 import cn.rmfield.website.entity.*;
 import cn.rmfield.website.repository.ArknightsStatisticsHistoryRepository;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class GuideServiceImpl implements GuideService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
