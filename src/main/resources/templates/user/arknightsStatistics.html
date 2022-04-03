@@ -28,9 +28,9 @@
                         $("#threeRate").html(threeRate);
                         $("#totalCount").html(data.totalCount);
                         $("#grossIncome").html(data.grossIncome);
-                        var grossExpenses = -data.grossIncome;
+                        var grossExpenses = -data.grossExpenses;
                         $("#grossExpenses").html(grossExpenses);
-                        var totalCost = (data.totalCost/10).toFixed(2);
+                        var totalCost = (data.totalCost/100).toFixed(2);
                         $("#totalCost").html(totalCost);
                     }
                 }
