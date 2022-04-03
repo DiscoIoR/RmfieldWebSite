@@ -70,8 +70,8 @@ public class GuideServiceImpl implements GuideService {
 
         //设置方舟统计记录
         ArknightsStatistics arknightsStatistics = new ArknightsStatistics();
-        arknightsStatistics.setArknights_nickName("default");
-        arknightsStatistics.setArknights_uid("default");
+        arknightsStatistics.setArknights_nickName("unknow");
+        arknightsStatistics.setArknights_uid("unknow");
         arknightsStatistics.setTotalCount(0);
         arknightsStatistics.setSixCount(0);
         arknightsStatistics.setFiveCount(0);
