@@ -15,7 +15,7 @@ public class ArknightsOrderHistory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String orderId; //交易编号
-    private Integer platform;   //平台 0:iOS  1:安卓
+    private String platform;   //平台 iOS,Android
     private Integer amount; //充值金额
     private String productName; //项目名称
     private Integer payTime;    //交易时间  timestamp
@@ -41,10 +41,10 @@ public class ArknightsOrderHistory implements Serializable {
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
-    public Integer getPlatform() {
+    public String getPlatform() {
         return platform;
     }
-    public void setPlatform(Integer platform) {
+    public void setPlatform(String platform) {
         this.platform = platform;
     }
     public Integer getAmount() {
