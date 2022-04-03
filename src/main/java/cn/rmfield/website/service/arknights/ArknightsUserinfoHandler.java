@@ -10,6 +10,9 @@ public class ArknightsUserinfoHandler {
     public static Map<String,Object> getUserinfo(String token){
         String url = "https://as.hypergryph.com/u8/user/info/v1/basic";
         String result = ArknightsDataRequest.postDataFromRemote(url,token);
+        if(result == null){
+            return null;
+        }
         int status = (Integer) JSON.parseObject(result).get("status");
         if(status!=0){
             return null;

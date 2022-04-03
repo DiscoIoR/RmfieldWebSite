@@ -12,17 +12,26 @@
                 url:'/user/api/ArknightsStatistics/getData',
                 success:function (data){
                     if(data!=null){
+                        $("#nickName").html(data.nickName);
+                        $("#akUid").html(data.akUid);
                         $("#sixConut").html(data.sixCount);
                         $("#fiveCount").html(data.fiveCount);
                         $("#fourCount").html(data.fourCount);
                         $("#threeCount").html(data.threeCount);
-                        $("#sixRate").html(data.sixRate);
-                        $("#fiveRate").html(data.fiveRate);
-                        $("#fourRate").html(data.fourRate);
-                        $("#threeRate").html(data.threeRate);
-                        $("#Total").html(data.Total);
+                        var sixRate = data.sixRate * 100;
+                        $("#sixRate").html(sixRate);
+                        var fiveRate = data.fiveRate * 100;
+                        $("#fiveRate").html(fiveRate);
+                        var fourRate = data.fourRate * 100;
+                        $("#fourRate").html(fourRate);
+                        var threeRate = data.threeRate * 100;
+                        $("#threeRate").html(threeRate);
+                        $("#totalCount").html(data.totalCount);
                         $("#grossIncome").html(data.grossIncome);
-                        $("#grossExpenses").html(data.grossExpenses);
+                        var grossExpenses = -data.grossIncome;
+                        $("#grossExpenses").html(grossExpenses);
+                        var totalCost = (data.totalCost/10).toFixed(2);
+                        $("#totalCost").html(totalCost);
                     }
                 }
             })
@@ -67,16 +76,15 @@
         <br>
     </div>
     <div>
-        <table >
-
-        </table>
+        <h4><span id="nickName"></span></h4>
+        <h5>uid:<span id="akUid"></span></h5>
         <table>
             <tbody>
             <tr><td>六星数量：<span id="sixConut"></span></td></tr>
             <tr><td>五星数量：<span id="fiveCount"></span></td></tr>
             <tr><td>四星数量：<span id="fourCount"></span></td></tr>
             <tr><td>三星数量：<span id="threeCount"></span></td></tr>
-            <tr><td>总数：<span id="Total"></span></td></tr>
+            <tr><td>总数：<span id="totalCount"></span></td></tr>
             <tr><td><br></td></tr>
             <tr><td>六星占比：<span id="sixRate"></span>%</td></tr>
             <tr><td>五星占比：<span id="fiveRate"></span>%</td></tr>
@@ -85,6 +93,8 @@
             <tr><td><br></td></tr>
             <tr><td>源石收入：<span id="grossIncome"></span></td></tr>
             <tr><td>源石支出：<span id="grossExpenses"></span></td></tr>
+            <tr><td><br></td></tr>
+            <tr><td>氪金量：<span id="totalCost"></span></td></tr>
             </tbody>
         </table>
     </div>

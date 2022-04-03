@@ -169,7 +169,7 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
         String uid = as.getArknights_uid();
         String nickName = as.getArknights_nickName();
-        if (uid.equals("default") && nickName.equals("default")) {
+        if (uid.equals("unknow") && nickName.equals("unknow")) {
             Map<String, Object> userinfo = ArknightsUserinfoHandler.getUserinfo(token);
             if (userinfo == null) {
                 return false;
@@ -189,17 +189,20 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         RfUser rfUser = userRepo.findByUsername(name);
         ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
         Map<String, Object> data = new HashMap<>();
+        data.put("nickName",as.getArknights_nickName());
+        data.put("akUid",as.getArknights_uid());
         data.put("sixCount", as.getSixCount());
         data.put("fiveCount", as.getFiveCount());
         data.put("fourCount", as.getFourCount());
         data.put("threeCount", as.getThreeCount());
-        data.put("sixRate", as.getSixRate() * 100);
-        data.put("fiveRate", as.getFiveRate() * 100);
-        data.put("fourRate", as.getFourRate() * 100);
-        data.put("threeRate", as.getThreeRate() * 100);
-        data.put("Total", as.getTotalCount());
+        data.put("sixRate", as.getSixRate());
+        data.put("fiveRate", as.getFiveRate());
+        data.put("fourRate", as.getFourRate());
+        data.put("threeRate", as.getThreeRate());
+        data.put("totalCount", as.getTotalCount());
         data.put("grossIncome", as.getDiamondGrossIncome());
         data.put("grossExpenses", as.getDiamondGrossExpenses());
+        data.put("totalCost",as.getTotalCost());
         return data;
     }
 }

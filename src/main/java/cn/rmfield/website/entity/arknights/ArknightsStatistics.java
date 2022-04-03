@@ -16,9 +16,9 @@ public class ArknightsStatistics implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     //明日方舟账号信息
-    @Column(columnDefinition = "VARCHAR(225) not null default 'default'")
+    @Column(columnDefinition = "VARCHAR(225) not null default 'unknow'")
     private String arknights_uid;   //用户id
-    @Column(columnDefinition = "VARCHAR(225) not null default 'default'")
+    @Column(columnDefinition = "VARCHAR(225) not null default 'unknow'")
     private String arknights_nickName;  //用户昵称
     //抽卡记录统计
     @Column(columnDefinition = "INT not null default 0")

@@ -23,6 +23,9 @@ public class ArknightsOrderDataHandler {
     public ArknightsOrderData orderHandler(String token){
         String url = "https://as.hypergryph.com/u8/pay/v1/recent";
         String result = ArknightsDataRequest.postDataFromRemote(url,token);
+        if(result == null){
+            return null;
+        }
         int status = (Integer) JSON.parseObject(result).get("status");
         if(status!=0){
             return null;
