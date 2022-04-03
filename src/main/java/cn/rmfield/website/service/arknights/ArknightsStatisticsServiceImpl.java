@@ -68,6 +68,7 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         for (ArknightsGachaDataEach gachaDataEach_New : gachaDataEachList_New) {
             ArknightsGachaHistory gachaHistory_New = new ArknightsGachaHistory();
             gachaHistory_New.setTs(gachaDataEach_New.getTs());
+            gachaHistory_New.setPool(gachaDataEach_New.getPool());
             gachaHistory_New.setName(gachaDataEach_New.getName());
             gachaHistory_New.setRarity(gachaDataEach_New.getRarity());
             gachaHistory_New.setIsNew(gachaDataEach_New.getIsNew());
