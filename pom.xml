@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.rmfield</groupId>
-    <artifactId>RmfiledWebSite</artifactId>
+    <artifactId>RmfieldWebSite</artifactId>
     <version>0.0.2-SNAPSHOT</version>
     <name>RmfieldWebSite</name>
     <description>RmfieldWebSite</description>
