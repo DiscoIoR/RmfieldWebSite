@@ -29,6 +29,15 @@ public class ArknightsDiamondHistory implements Serializable {
     @JsonIgnore
     private ArknightsStatistics arknightsStatistics;
 
+    public ArknightsDiamondHistory(Integer ts, String operation, String platform, Integer changeNum, Integer currentNum, ArknightsStatistics arknightsStatistics) {
+        this.ts = ts;
+        this.operation = operation;
+        this.platform = platform;
+        this.changeNum = changeNum;
+        this.currentNum = currentNum;
+        this.arknightsStatistics = arknightsStatistics;
+    }
+
     public int getId() {
         return id;
     }

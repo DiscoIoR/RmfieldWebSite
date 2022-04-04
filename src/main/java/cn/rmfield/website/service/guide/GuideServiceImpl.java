@@ -18,7 +18,9 @@ import org.springframework.ui.Model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GuideServiceImpl implements GuideService {
@@ -111,14 +113,6 @@ public class GuideServiceImpl implements GuideService {
         model.addAttribute("user", getUname());
         model.addAttribute("role", getAuthorities());
         return "/admin/main";
-    }
-
-    //权限不足，拒绝访问
-    @Override
-    public String deniedAccess(Model model) {
-        model.addAttribute("user", getUname());
-        model.addAttribute("role", getAuthorities());
-        return "/deniedAccess";
     }
 
     //注销登录

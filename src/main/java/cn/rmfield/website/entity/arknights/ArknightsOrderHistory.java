@@ -29,6 +29,15 @@ public class ArknightsOrderHistory implements Serializable {
     @JsonIgnore
     private ArknightsStatistics arknightsStatistics;
 
+    public ArknightsOrderHistory(String orderId, String platform, Integer amount, String productName, Integer payTime, ArknightsStatistics arknightsStatistics) {
+        this.orderId = orderId;
+        this.platform = platform;
+        this.amount = amount;
+        this.productName = productName;
+        this.payTime = payTime;
+        this.arknightsStatistics = arknightsStatistics;
+    }
+
     public int getId() {
         return id;
     }

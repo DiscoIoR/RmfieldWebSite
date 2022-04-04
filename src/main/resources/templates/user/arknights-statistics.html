@@ -9,7 +9,7 @@
             $.ajax({
                 type:'get',
                 dataType:'json',
-                url:'/user/api/arknight-statistics/general',
+                url:'/user/api/arknights-statistics/general',
                 success:function (data){
                     if(data!=null){
                         $("#nickName").html(data.nickName);
@@ -18,13 +18,13 @@
                         $("#fiveCount").html(data.fiveCount);
                         $("#fourCount").html(data.fourCount);
                         $("#threeCount").html(data.threeCount);
-                        var sixRate = data.sixRate * 100;
+                        var sixRate = (data.sixRate * 100).toFixed(2);
                         $("#sixRate").html(sixRate);
-                        var fiveRate = data.fiveRate * 100;
+                        var fiveRate = (data.fiveRate * 100).toFixed(2);
                         $("#fiveRate").html(fiveRate);
-                        var fourRate = data.fourRate * 100;
+                        var fourRate = (data.fourRate * 100).toFixed(2);
                         $("#fourRate").html(fourRate);
-                        var threeRate = data.threeRate * 100;
+                        var threeRate = (data.threeRate * 100).toFixed(2);
                         $("#threeRate").html(threeRate);
                         $("#totalCount").html(data.totalCount);
                         $("#grossIncome").html(data.grossIncome);
@@ -49,7 +49,7 @@
                 dataType:'json',
                 contentType:'application/json',
                 data:JSON.stringify({token:token}),
-                url:'/user/api/arknight-statistics/general',
+                url:'/user/api/arknights-statistics/general',
                 success:function (data){
                     if (data!=null){
                         $("#tokenUpdateSuccess").html(data.updateResult);
@@ -62,7 +62,7 @@
 </head>
 <body>
 <div align="center">
-    <div><h3>数据页面</h3></div>
+    <div><h3>明日方舟抽卡数据统计</h3></div>
     <div>
         <span>先去官网登录，然后<a href="https://as.hypergryph.com/user/info/v1/token_by_cookie" target="_blank">点这里获取token</a></span>
     </div>
@@ -94,7 +94,7 @@
             <tr><td>源石收入：<span id="grossIncome"></span></td></tr>
             <tr><td>源石支出：<span id="grossExpenses"></span></td></tr>
             <tr><td><br></td></tr>
-            <tr><td>氪金量：<span id="totalCost"></span></td></tr>
+            <tr><td>氪金量：¥<span id="totalCost"></span></td></tr>
             </tbody>
         </table>
         <br><br><br><br><br><br>

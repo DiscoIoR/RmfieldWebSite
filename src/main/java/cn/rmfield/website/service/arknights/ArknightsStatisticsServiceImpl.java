@@ -29,20 +29,23 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
     @Autowired
     private ArknightsOrderHistoryRepository orderHistoryRepo;
 
+    private ArknightsStatistics as;
+
     @Override
     public Boolean updateData(String token) {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        RfUser rfUser = userRepo.findByUsername(name);
+        this.as = asRepo.findByRfUser_id(rfUser.getId());
         Boolean userinfoResult = saveUserinfo(token);
         Boolean gachaResult = updateGacha(token);
         Boolean diamondResult = updateDiamond(token);
         Boolean orderResult = updateOrder(token);
+        asRepo.save(as);
         return userinfoResult && gachaResult && diamondResult && orderResult;
     }
 
     public Boolean updateGacha(String token) {
         //从数据库提取之前的抽卡数据
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        RfUser rfUser = userRepo.findByUsername(name);
-        ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
         List<ArknightsGachaHistory> gachaHistoryList = gachaHistoryRepo.findByArknightsStatistics_id(as.getId());
         Set<Integer> tses = new HashSet<>();
         for (ArknightsGachaHistory gachaHistory : gachaHistoryList) {
@@ -66,13 +69,14 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
             return false;
         }
         for (ArknightsGachaDataEach gachaDataEach_New : gachaDataEachList_New) {
-            ArknightsGachaHistory gachaHistory_New = new ArknightsGachaHistory();
-            gachaHistory_New.setTs(gachaDataEach_New.getTs());
-            gachaHistory_New.setPool(gachaDataEach_New.getPool());
-            gachaHistory_New.setName(gachaDataEach_New.getName());
-            gachaHistory_New.setRarity(gachaDataEach_New.getRarity());
-            gachaHistory_New.setIsNew(gachaDataEach_New.getIsNew());
-            gachaHistory_New.setArknightsStatistics(as);
+            ArknightsGachaHistory gachaHistory_New = new ArknightsGachaHistory(
+                    gachaDataEach_New.getTs(),
+                    gachaDataEach_New.getPool(),
+                    gachaDataEach_New.getName(),
+                    gachaDataEach_New.getRarity(),
+                    gachaDataEach_New.getIsNew(),
+                    as
+            );
             gachaHistoryRepo.save(gachaHistory_New);
         }
         as.setSixCount(gachaData_New.getSixCount());
@@ -84,15 +88,11 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         as.setFourRate(gachaData_New.getFourRate());
         as.setThreeRate(gachaData_New.getThreeRate());
         as.setTotalCount(gachaData_New.getTotalCount());
-        asRepo.save(as);
         return true;
     }
 
     public Boolean updateDiamond(String token) {
         //从数据库提取之前的源石数据
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        RfUser rfUser = userRepo.findByUsername(name);
-        ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
         List<ArknightsDiamondHistory> diamondHistoryList = diamondHistoryRepo.findByArknightsStatistics_id(as.getId());
         Set<Integer> tses = new HashSet<>();
         for (ArknightsDiamondHistory diamondHistory : diamondHistoryList) {
@@ -112,26 +112,23 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
             return false;
         }
         for (ArknightsDiamondDataEach diamondDataEach_New : diamondDataEachList_New) {
-            ArknightsDiamondHistory diamondHistory_New = new ArknightsDiamondHistory();
-            diamondHistory_New.setTs(diamondDataEach_New.getTs());
-            diamondHistory_New.setOperation(diamondDataEach_New.getOperation());
-            diamondHistory_New.setPlatform(diamondDataEach_New.getPlatform());
-            diamondHistory_New.setChangeNum(diamondDataEach_New.getChangeNum());
-            diamondHistory_New.setCurrentNum(diamondDataEach_New.getCurrentNum());
-            diamondHistory_New.setArknightsStatistics(as);
+            ArknightsDiamondHistory diamondHistory_New = new ArknightsDiamondHistory(
+                    diamondDataEach_New.getTs(),
+                    diamondDataEach_New.getOperation(),
+                    diamondDataEach_New.getPlatform(),
+                    diamondDataEach_New.getChangeNum(),
+                    diamondDataEach_New.getCurrentNum(),
+                    as
+            );
             diamondHistoryRepo.save(diamondHistory_New);
         }
         as.setDiamondGrossIncome(diamondData_New.getDiamondGrossIncome());
         as.setDiamondGrossExpenses(diamondData_New.getDiamondGrossExpenses());
-        asRepo.save(as);
         return true;
     }
 
     public Boolean updateOrder(String token) {
         //从数据库提取之前的充值数据
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        RfUser rfUser = userRepo.findByUsername(name);
-        ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
         List<ArknightsOrderHistory> orderHistoryList = orderHistoryRepo.findByArknightsStatistics_id(as.getId());
         Set<String> orderIdSet = new HashSet<>();
         for(ArknightsOrderHistory orderHistory:orderHistoryList){
@@ -150,24 +147,21 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
             return false;
         }
         for (ArknightsOrderDataEach orderDataEach_New:orderDataEachList_New){
-            ArknightsOrderHistory orderHistory_New = new ArknightsOrderHistory();
-            orderHistory_New.setOrderId(orderDataEach_New.getOrderId());
-            orderHistory_New.setPlatform(orderDataEach_New.getPlatform());
-            orderHistory_New.setAmount(orderDataEach_New.getAmount());
-            orderHistory_New.setProductName(orderDataEach_New.getProductName());
-            orderHistory_New.setPayTime(orderDataEach_New.getPayTime());
-            orderHistory_New.setArknightsStatistics(as);
+            ArknightsOrderHistory orderHistory_New = new ArknightsOrderHistory(
+                    orderDataEach_New.getOrderId(),
+                    orderDataEach_New.getPlatform(),
+                    orderDataEach_New.getAmount(),
+                    orderDataEach_New.getProductName(),
+                    orderDataEach_New.getPayTime(),
+                    as
+            );
             orderHistoryRepo.save(orderHistory_New);
         }
         as.setTotalCost(orderData_New.getTotalCost());
-        asRepo.save(as);
         return true;
     }
 
     public Boolean saveUserinfo(String token) {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        RfUser rfUser = userRepo.findByUsername(name);
-        ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
         String uid = as.getArknights_uid();
         String nickName = as.getArknights_nickName();
         if (uid.equals("unknow") && nickName.equals("unknow")) {
@@ -179,7 +173,6 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
             nickName = (String) userinfo.get("nickName");
             as.setArknights_uid(uid);
             as.setArknights_nickName(nickName);
-            asRepo.save(as);
         }
         return true;
     }
@@ -206,4 +199,21 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         data.put("totalCost",as.getTotalCost());
         return data;
     }
+
+    @Override
+    public List<Map<String, Object>> gacha() {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> diamond() {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> order() {
+        return null;
+    }
+
+
 }

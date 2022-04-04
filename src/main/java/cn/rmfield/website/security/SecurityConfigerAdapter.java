@@ -40,7 +40,6 @@ public class SecurityConfigerAdapter extends WebSecurityConfigurerAdapter {
     //用户认证
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        System.out.println("configure(AuthenticationManagerBuilder auth)");
         //设置认证方式
         auth.authenticationProvider(authenticationProvider);
     }
@@ -48,7 +47,10 @@ public class SecurityConfigerAdapter extends WebSecurityConfigurerAdapter {
     //请求授权
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("configure(HttpSecurity http)");
+
+        //防止post请求被拦截
+        http .csrf().disable();
+
         http.authorizeRequests()
                 //页面访问权限
                 .antMatchers( "/css/**", "/fonts/**", "/js/**").permitAll()
@@ -67,7 +69,7 @@ public class SecurityConfigerAdapter extends WebSecurityConfigurerAdapter {
                 .logout().permitAll()
                 .and()
                 //指定权限限制页面
-                .exceptionHandling().accessDeniedPage("/deniedAccess");
+                .exceptionHandling().accessDeniedPage("/access-denied");
     }
 }
 

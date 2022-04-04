@@ -29,6 +29,15 @@ public class ArknightsGachaHistory implements Serializable{
     @JsonIgnore
     private ArknightsStatistics arknightsStatistics;
 
+    public ArknightsGachaHistory(Integer ts, String pool, String name, Integer rarity, Boolean isNew, ArknightsStatistics arknightsStatistics) {
+        this.ts = ts;
+        this.pool = pool;
+        this.name = name;
+        this.rarity = rarity;
+        this.isNew = isNew;
+        this.arknightsStatistics = arknightsStatistics;
+    }
+
     public int getId() {
         return id;
     }

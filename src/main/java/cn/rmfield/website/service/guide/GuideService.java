@@ -7,9 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface GuideService {
-    public String register(RfUser secUserDomain);
-    public String loginSuccess(Model model);
-    public String main(Model model);
-    public String deniedAccess(Model model);
-    public String logout(HttpServletRequest request, HttpServletResponse response);
+    String register(RfUser secUserDomain);
+    String loginSuccess(Model model);
+    String main(Model model);
+    String logout(HttpServletRequest request, HttpServletResponse response);
 }

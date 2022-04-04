@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Controller
 public class GuideController {
@@ -57,8 +58,8 @@ public class GuideController {
         return guideService.logout(request,response);
     }
 
-    @RequestMapping("/deniedAccess")
-    public String deniedAccess(Model model){
-        return guideService.deniedAccess(model);
+    @RequestMapping("/access-denied")
+    public String deniedAccess(){
+        return "access-denied";
     }
 }
