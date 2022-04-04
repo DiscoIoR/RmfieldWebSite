@@ -38,7 +38,9 @@
         }
     </script>
     <script type="text/javascript" th:inline="javascript">
-        $(document).ready(getData());
+        $(document).ready(function (){
+            getData()
+        });
     </script>
     <script type="text/javascript" th:inline="javascript">
         function updateData(){
@@ -59,12 +61,29 @@
             })
         }
     </script>
+    <style>
+        .links:link,.links:visited {
+            color: #00bfff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links:hover{
+            color: #0099cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links:active{
+            color: #007399;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 <div align="center">
     <div><h3>明日方舟抽卡数据统计</h3></div>
     <div>
-        <span>先去官网登录，然后<a href="https://as.hypergryph.com/user/info/v1/token_by_cookie" target="_blank">点这里获取token</a></span>
+        <span>先去<a class="links" href="https://ak.hypergryph.com/">官网</a>登录，然后<a class="links" href="https://as.hypergryph.com/user/info/v1/token_by_cookie" target="_blank">点这里获取token</a></span>
     </div>
     <br><br>
     <div>
@@ -99,7 +118,7 @@
         </table>
         <br><br><br><br><br><br>
         <div>
-            <a href="">"Click here for details"</a>
+            <a class="links" th:href="@{/user/arknight-statistics/details}">"Click here for details"</a>
         </div>
     </div>
 </div>

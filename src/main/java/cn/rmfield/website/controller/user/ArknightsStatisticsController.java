@@ -10,16 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Tk{
-    private String token;
-    public String getToken() {
-        return token;
-    }
-    public void setToken(String token) {
-        this.token = token;
-    }
-}
-
 @Controller
 @RequestMapping("/user")
 public class ArknightsStatisticsController {
@@ -60,20 +50,20 @@ public class ArknightsStatisticsController {
     }
 
     @GetMapping("/api/arknights-statistics/gacha")
+    @ResponseBody
     public List<Map<String,Object>> gacha(){
-
-        return null;
+        return akService.gachaDetail();
     }
 
     @GetMapping("/api/arknights-statistics/diamond")
+    @ResponseBody
     public List<Map<String,Object>> diamond(){
-
-        return null;
+        return akService.diamondDetail();
     }
 
     @GetMapping("/api/arknights-statistics/order")
+    @ResponseBody
     public List<Map<String,Object>> order(){
-
-        return null;
+        return akService.orderDetail();
     }
 }
