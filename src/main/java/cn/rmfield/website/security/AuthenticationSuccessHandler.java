@@ -42,11 +42,11 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
             roles.add(au.getAuthority());
         }
         if(roles.contains("ROLE_USER")){
-            url = "/user/loginSuccess";
+            url = "/user";
         }else if(roles.contains("ROLE_ADMIN")){
-            url = "/admin/main";
+            url = "/admin";
         }else {
-            url = "/deniedAccess";
+            url = "/access-denied";
         }
         return url;
     }

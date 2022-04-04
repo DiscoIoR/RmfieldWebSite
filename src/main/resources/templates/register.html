@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang=zh-cmn-Hans xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>注册页面</title>
@@ -31,21 +31,57 @@
             }
         }
     </script>
-<body>
+    <style>
+        .links:link,.links:visited {
+            color: #00bfff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links:hover{
+            color: #0099cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links:active{
+            color: #007399;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="background-color: #f3f3f3">
 <div>
+    <div style="margin: 12px 30px;">
+        <a th:href="@{/login}" style="float: left;" class="links">登录</a>
+    </div>
+</div>
+<div>
+    <br><br>
     <h2 align="center">用户注册</h2>
 </div>
 <br>
 <br>
 <div align="center">
     <form th:action="@{/register}" name="myform" method="post" th:object="${userDomain}" role="form">
-        <div th:if="${param.failed != null}">
-            <p><font color="red">注册失败</font></p>
+        <div th:if="${param.userexist != null}">
+            <p><font color="red">注册失败,用户名已存在</font></p>
             <br>
             <br>
-            <div><a th:href="@{/toRegister}">重试</a></div>
+            <div><a th:href="@{/register}">重试</a></div>
         </div>
-        <div th:unless="${param.failed != null}">
+        <div th:if="${param.verifyerror != null}">
+            <p><font color="red">注册失败,邀请码错误</font></p>
+            <br>
+            <br>
+            <div><a th:href="@{/register}">重试</a></div>
+        </div>
+        <div th:if="${param.unknowerror != null}">
+            <p><font color="red">注册失败,未知错误</font></p>
+            <br>
+            <br>
+            <div><a th:href="@{/register}">重试</a></div>
+        </div>
+        <div th:unless="${param.userexist != null} or ${param.verifyerror != null} or ${param.unknowerror != null}">
             <div>
                 <label>用户名</label>
                 <input type="text" placeholder="请输入您的用户名" th:field="*{username}"/>

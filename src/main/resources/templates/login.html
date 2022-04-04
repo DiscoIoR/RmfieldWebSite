@@ -25,7 +25,7 @@
             });
         });
     </script>
-<body>
+<body style="background-color: #f3f3f3">
 <div>
     <h2 align="center">用户登录</h2>
 </div>
@@ -40,14 +40,6 @@
             <br>
             <div><a th:href="@{/toLogin}">重试</a></div>
         </div>
-        <!-- 注销 -->
-        <div th:if="${param.logout != null}">
-            <p><font color="red">用户已注销成功！</font></p>
-            <br>
-            <br>
-            <div><a th:href="@{/}">返回主页</a></div>
-        </div>
-        <div th:unless="${param.failed != null} or ${param.logout != null}">
         <div>
             <label>用户名</label>
             <input type="text" placeholder="请输入您的用户名" name="username" id="username"/>
@@ -60,8 +52,11 @@
             <button type="button" id="loginBtn">登录</button>
             <button type="reset">重置</button>
         </div>
-        </div>
     </form>
+</div>
+<div align="center">
+    <br><br><br>
+    <a th:href="@{/register}">注册</a>
 </div>
 </body>
 </html>

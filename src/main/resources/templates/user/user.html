@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=zh-cmn-Hans xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>access-denied</title>
+    <title>Title</title>
     <style>
         .links:link,.links:visited {
             color: #00bfff;
@@ -29,7 +29,10 @@
     </div>
 </div>
 <div align="center">
-    <h3>access-denied!</h3>
+    <div><h3>用户主页</h3></div>
+    <div>
+        <a th:href="@{/user/arknights-statistics}">明日方舟数据统计</a>
+    </div>
 </div>
 </body>
 </html>

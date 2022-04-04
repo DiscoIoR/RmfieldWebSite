@@ -2,7 +2,7 @@
 <html lang=zh-cmn-Hans xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>明日方舟抽卡数据统计</title>
+    <title>明日方舟数据统计</title>
     <script th:src="@{/js/jquery.min.js}"></script>
     <script type="text/javascript" th:inline="javascript">
         function getData(){
@@ -79,7 +79,13 @@
         }
     </style>
 </head>
-<body>
+<body style="background-color: #f3f3f3">
+<div>
+    <div style="margin: 12px 30px;">
+        <a th:href="@{/user}" style="float: left;" class="links" >Home</a>
+        <a th:href="@{/logout}" style="float: right;" class="links">Logout</a>
+    </div>
+</div>
 <div align="center">
     <div><h3>明日方舟抽卡数据统计</h3></div>
     <div>

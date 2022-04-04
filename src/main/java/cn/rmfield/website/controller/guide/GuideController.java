@@ -7,11 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 @Controller
 public class GuideController {
@@ -20,42 +17,37 @@ public class GuideController {
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "redirect:/login";
     }
 
-    @RequestMapping("/toLogin")
-    public String toLogin() {
-        return "login";
-    }
-
-    @RequestMapping("/toRegister")
+    @GetMapping("/register")
     public String toRegister(@ModelAttribute("userDomain") RfUser userDomain) {
         return "register";
     }
 
-    @RequestMapping("/register")
+    @PostMapping("/register")
     public String register(@ModelAttribute("userDomain") RfUser userDomain) {
         return guideService.register(userDomain);
     }
 
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @RequestMapping("/user/loginSuccess")
-    public String loginSuccess(Model model){
-        return guideService.loginSuccess(model);
+    @RequestMapping("/user")
+    public String loginSuccess(){
+        return "user/user";
     }
 
-    @RequestMapping("/admin/main")
+    @RequestMapping("/admin")
     public String main(Model model){
-        return guideService.main(model);
+        return "admin/admin";
     }
 
-    @RequestMapping("logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response){
-        return guideService.logout(request,response);
+    @RequestMapping("/logout")
+    public String logout(){
+        return "login";
     }
 
     @RequestMapping("/access-denied")

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 @Configuration
 public class SecurityConfigerAdapter extends WebSecurityConfigurerAdapter {
@@ -17,6 +18,9 @@ public class SecurityConfigerAdapter extends WebSecurityConfigurerAdapter {
     private AuthenticationProvider authenticationProvider;
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    private RfLogoutSuccessHandler rfLogoutSuccessHandler;
+
     @Configuration
     public static class Provider {
         @Autowired
@@ -53,8 +57,8 @@ public class SecurityConfigerAdapter extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 //页面访问权限
-                .antMatchers( "/css/**", "/fonts/**", "/js/**").permitAll()
-                .antMatchers("/toLogin", "/toRegister", "/", "/login", "/register").permitAll()
+                .antMatchers("/css/**", "/fonts/**", "/js/**").permitAll()
+                .antMatchers("/", "/login", "/register").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "DBA")
                 .anyRequest().authenticated()
@@ -63,10 +67,13 @@ public class SecurityConfigerAdapter extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login").successHandler(authenticationSuccessHandler)
                     .usernameParameter("username").passwordParameter("password")
-                .failureUrl("/login?failed")
+                    .failureUrl("/login?failed")
                 .and()
                 //注销
-                .logout().permitAll()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessHandler(rfLogoutSuccessHandler)
+                    .permitAll()
                 .and()
                 //指定权限限制页面
                 .exceptionHandling().accessDeniedPage("/access-denied");

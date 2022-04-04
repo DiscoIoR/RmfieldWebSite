@@ -30,8 +30,6 @@ public class GuideServiceImpl implements GuideService {
     private InvitationCodeRepository invitationCodeRepository;
     @Autowired
     private ArknightsStatisticsRepostiory arknightsStatisticsRepostiory;
-    @Autowired
-    private ArknightsGachaHistoryRepository arknightsGachaHistoryRepository;
 
     //注册
     @Override
@@ -39,15 +37,15 @@ public class GuideServiceImpl implements GuideService {
         //校验用户名唯一性
         RfUser findUserResult = userRepository.findByUsername(userDomain.getUsername());
         if(findUserResult != null){
-            return "redirect:/toRegister?failed";
+            return "redirect:/register?userexist";
         }
 
         //检验邀请码
         InvitationCode invitationCode = invitationCodeRepository.findByCode(userDomain.getInvitationcode());
         if (invitationCode == null) {
-            return "redirect:/toRegister?failed";
+            return "redirect:/register?verifyerror";
         } else if (invitationCode.getState() == 0) {
-            return "redirect:/toRegister?failed";
+            return "redirect:/register?verifyerror";
         }
 
         //设置密码
@@ -95,36 +93,8 @@ public class GuideServiceImpl implements GuideService {
             invitationCodeRepository.save(invitationCode);
             return "login";
         } else {
-            return "redirect:/toRegister?failed";
+            return "redirect:/register?unknowerror";
         }
-    }
-
-    //用户登录成功
-    @Override
-    public String loginSuccess(Model model) {
-        model.addAttribute("user", getUname());
-        model.addAttribute("role", getAuthorities());
-        return "user/loginSuccess";
-    }
-
-    //管理员登录成功
-    @Override
-    public String main(Model model) {
-        model.addAttribute("user", getUname());
-        model.addAttribute("role", getAuthorities());
-        return "/admin/main";
-    }
-
-    //注销登录
-    @Override
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        //获取用户认证信息
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            //注销
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
-        return "redirect:/login?logout";
     }
 
     //获取当前用户名称
