@@ -9,7 +9,7 @@
             $.ajax({
                 type:'get',
                 dataType:'json',
-                url:'/user/api/ArknightsStatistics/getData',
+                url:'/user/api/arknight-statistics/general',
                 success:function (data){
                     if(data!=null){
                         $("#nickName").html(data.nickName);
@@ -45,14 +45,14 @@
             $("#tokenUpdateSuccess").html("数据更新中...");
             var token = $("#token").val();
             $.ajax({
-                type:'get',
-                dataType:'text',
-                contentType:'text/plain',
-                data:{token:token},
-                url:'/user/api/ArknightsStatistics/updateData',
+                type:'post',
+                dataType:'json',
+                contentType:'application/json',
+                data:JSON.stringify({token:token}),
+                url:'/user/api/arknight-statistics/general',
                 success:function (data){
                     if (data!=null){
-                        $("#tokenUpdateSuccess").html(data);
+                        $("#tokenUpdateSuccess").html(data.updateResult);
                         getData();
                     }
                 }
@@ -97,6 +97,10 @@
             <tr><td>氪金量：<span id="totalCost"></span></td></tr>
             </tbody>
         </table>
+        <br><br><br><br><br><br>
+        <div>
+            <a href="">"Click here for details"</a>
+        </div>
     </div>
 </div>
 </body>
