@@ -2,7 +2,6 @@ package cn.rmfield.website.service.guide;
 
 import cn.rmfield.website.entity.*;
 import cn.rmfield.website.entity.arknights.ArknightsStatistics;
-import cn.rmfield.website.repository.arknights.ArknightsGachaHistoryRepository;
 import cn.rmfield.website.repository.arknights.ArknightsStatisticsRepostiory;
 import cn.rmfield.website.repository.InvitationCodeRepository;
 import cn.rmfield.website.repository.UserRepository;
@@ -11,16 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class GuideServiceImpl implements GuideService {
