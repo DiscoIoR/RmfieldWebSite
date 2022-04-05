@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>管理员页面</title>
+    <style>
+        .links:link,.links:visited {
+            color: #00bfff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links:hover{
+            color: #0099cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links:active{
+            color: #007399;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
 </head>
-<body>
-
+<body style="background-color: #f3f3f3">
+<div>
+    <div style="margin: 12px 30px;">
+        <a th:href="@{/user}" style="float: left;" class="links" >Home</a>
+        <a th:href="@{/logout}" style="float: right;" class="links">Logout</a>
+    </div>
+</div>
+<div align="center">
+    <div>
+        <br><br>
+        <h3>MAINTAINER</h3>
+    </div>
+    <br><br><br><br>
+    <div>
+        <a th:href="@{/admin/rfuser}" class="links">User-Manage-Panel</a>
+    </div>
+</div>
 </body>
 </html>

@@ -5,7 +5,6 @@ import cn.rmfield.website.entity.RfUser;
 import cn.rmfield.website.repository.UserRepository;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,45 +28,62 @@ public class UserManageServiceImpl implements UserManageService{
     }
 
     @Override
-    public JSONObject getUserById(Integer id) {
+    public JSONArray getUserById(Integer id) {
         RfUser rfUser = userRepository.getById(id);
-        UserDataForDisplay dataForManage = new UserDataForDisplay(rfUser);
-        return JSONObject.parseObject(JSON.toJSONString(dataForManage));
+        List<UserDataForDisplay> dataForDisplayList = new ArrayList<>();
+        dataForDisplayList.add(new UserDataForDisplay(rfUser));
+        return JSONArray.parseArray(JSON.toJSONString(dataForDisplayList));
     }
 
     @Override
-    public JSONObject getUserByUsername(String username) {
+    public JSONArray getUserByUsername(String username) {
         RfUser rfUser = userRepository.findByUsername(username);
-        UserDataForDisplay dataForManage = new UserDataForDisplay(rfUser);
-        return JSONObject.parseObject(JSON.toJSONString(dataForManage));
+        if(rfUser==null){
+            return null;
+        }
+        List<UserDataForDisplay> dataForDisplayList = new ArrayList<>();
+        dataForDisplayList.add(new UserDataForDisplay(rfUser));
+        return JSONArray.parseArray(JSON.toJSONString(dataForDisplayList));
     }
 
     @Override
     public JSONArray getUserListByRealname(String realname) {
         List<RfUser> rfUserList = userRepository.findByRealname(realname);
-        List<UserDataForDisplay> dataForManageList = new ArrayList<>();
+        List<UserDataForDisplay> dataForDisplayList = new ArrayList<>();
         for (RfUser rfUser:rfUserList){
-            dataForManageList.add(new UserDataForDisplay(rfUser));
+            dataForDisplayList.add(new UserDataForDisplay(rfUser));
         }
-        return JSONArray.parseArray(JSON.toJSONString(dataForManageList));
+        if(dataForDisplayList.size()==0){
+            return null;
+        }
+        return JSONArray.parseArray(JSON.toJSONString(dataForDisplayList));
     }
 
     @Override
     public Boolean updateUser(UserDataForUpdate dataForUpdate) {
         try {
-            if(dataForUpdate.getId()!=null&&(!dataForUpdate.getUsername().equals(""))
-                    &&dataForUpdate.getUsername()!=null&&(!dataForUpdate.getUsername().equals(""))
-                    &&dataForUpdate.getRealname()!=null&&(!dataForUpdate.getRealname().equals(""))
-                    &&dataForUpdate.getPassword()!=null&&(!dataForUpdate.getPassword().equals(""))
-                    &&dataForUpdate.getROLE_ADMIN()!=null
-                    &&dataForUpdate.getROLE_DBA()!=null
-                    &&dataForUpdate.getROLE_USER()!=null
-            ){
-                RfUser rfUser = userRepository.getById(dataForUpdate.getId());
+            //校验id是否为空
+            if(dataForUpdate.getId()==null||(dataForUpdate.getUsername().equals(""))){
+                return false;
+            }
+            RfUser rfUser = userRepository.getById(dataForUpdate.getId());
+            //判断是否更新用户名
+            if(dataForUpdate.getUsername()!=null&&(!dataForUpdate.getUsername().equals(""))){
                 rfUser.setUsername(dataForUpdate.getUsername());
+            }
+            //判断是否更新别名
+            if(dataForUpdate.getRealname()!=null&&(!dataForUpdate.getRealname().equals(""))){
+                rfUser.setRealname(dataForUpdate.getRealname());
+            }
+            //判断是否更新密码
+            if(dataForUpdate.getPassword()!=null&&(!dataForUpdate.getPassword().equals(""))){
                 String secret = new BCryptPasswordEncoder().encode(dataForUpdate.getPassword());
                 rfUser.setPassword(secret);
-                rfUser.setRealname(dataForUpdate.getRealname());
+            }
+            //校验是否设置里权限，并生成新的权限列表
+            if(dataForUpdate.getROLE_ADMIN()!=null
+                    &&dataForUpdate.getROLE_DBA()!=null
+                    &&dataForUpdate.getROLE_USER()!=null){
                 List<Authority> authorityList = new ArrayList<>();
                 if (dataForUpdate.getROLE_ADMIN()){
                     Authority auth = new Authority();
@@ -88,8 +104,10 @@ public class UserManageServiceImpl implements UserManageService{
                     authorityList.add(auth);
                 }
                 rfUser.setAuthorityList(authorityList);
-                userRepository.save(rfUser);
+            }else {
+                return false;
             }
+            userRepository.save(rfUser);
         }catch (Exception e){
             e.printStackTrace();
             return false;

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang=zh-cmn-Hans xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理面板</title>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        function getData(url) {
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                url: url,
+                success: function (data) {
+                    if (data != null) {
+                        resultToTable(data);
+                    }
+                },
+                error:function (){
+                    $("#resultThead").html('<tr><td>User Not Found</td></tr>>');
+                    $("#resultTbody").html('');
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(function () {
+            $("#getUserList").click(function () {
+                $("#resultThead").html('');
+                $("#resultTbody").html('');
+                getData('/admin/api/rfuser/list');
+            })
+            $("#getUserListByRealname").click(function () {
+                $("#resultThead").html('');
+                $("#resultTbody").html('');
+                var realname=$("#findParam").val();
+                var url = '/admin/api/rfuser/list?realname=' + realname;
+                getData(url);
+            })
+            $("#getUserById").click(function () {
+                $("#resultThead").html('');
+                $("#resultTbody").html('');
+                var id=$("#findParam").val();
+                var url = '/admin/api/rfuser?id=' + id;
+                getData(url);
+            })
+            $("#getUserByUsername").click(function () {
+                $("#resultThead").html('');
+                $("#resultTbody").html('');
+                var username=$("#findParam").val();
+                var url = '/admin/api/rfuser?username=' + username;
+                getData(url);
+            })
+        })
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        function resultToTable(result){
+            var headLine = $('<tr></tr>');
+            headLine.append('<td>id</td>');
+            headLine.append('<td>用户名</td>');
+            headLine.append('<td>别名</td>');
+            headLine.append('<td>ROLE_ADMIN</td>');
+            headLine.append('<td>ROLE_DBA</td>');
+            headLine.append('<td>ROLE_USER</td>');
+            $("#resultThead").append(headLine);
+            for (var i = 0; i < result.length; i++) {
+                var line = $('<tr></tr>')
+                line.append('<td>' + result[i].id + '</td>td>');
+                line.append('<td>' + result[i].username + '</td>');
+                line.append('<td>' + result[i].realname + '</td>');
+                var authArry = [];
+                var authList = result[i].authorityDataList;
+                for(var j=0;j<authList.length;j++){
+                    authArry.push(authList[j].roleId);
+                }
+                for(var k=1;k<=3;k++){
+                    if(authArry.includes(k)){
+                        line.append('<td>yes</td>');
+                    }else {
+                        line.append('<td>no</td>');
+                    }
+                }
+                $("#resultTbody").append(line)
+            }
+        }
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(function (){
+            $("#updateUser").click(function (){
+                var id = $("#updateId").val();
+                var username=$("#updateUsername").val();
+                var password=$("#updatePassword").val();
+                var realname=$("#updateRealname").val();
+                var roleAdmin=$("#updateRoleAdmin").prop('checked');
+                var roleDba=$("#updateRoleDba").prop('checked');
+                var roleUser=$("#updateRoleUser").prop('checked');
+                $.ajax({
+                    url: "/admin/api/rfuser",
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id:id,
+                        username:username,
+                        realname:realname,
+                        password:password,
+                        ROLE_ADMIN:roleAdmin,
+                        ROLE_DBA:roleDba,
+                        ROLE_USER:roleUser}),
+                    dataType: 'json',
+                    success:function (data){
+                        $("#resultThead").html('');
+                        $("#resultTbody").html('');
+                        $("#updateState").text("用户信息更新成功")
+                        resultToTable(data);
+                    },
+                    error:function (){
+                        $("#updateState").text("用户信息更新失败")
+                    }
+                })
+            })
+        })
+    </script>
+    <style>
+        table{
+            border: 1px solid #a1a1a1;
+            border-collapse: collapse;
+        }
+        tr{
+            border: 1px solid #a1a1a1;
+            border-collapse: collapse;
+        }
+        td{
+            border: 1px solid #a1a1a1;
+            border-collapse: collapse;
+            font-family: "Microsoft YaHei UI",sans-serif;
+            font-weight: normal;
+            text-align: center;
+            padding: 8px 20px;
+        }
+        .links:link,.links:visited {
+            color: #00bfff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links:hover{
+            color: #0099cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links:active{
+            color: #007399;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="background-color: #f3f3f3">
+<div>
+    <div style="margin: 12px 30px;">
+        <a th:href="@{/user}" style="float: left;" class="links" >Home</a>
+        <a th:href="@{/logout}" style="float: right;" class="links">Logout</a>
+    </div>
+</div>
+<br><br><br>
+<div align="center">
+    <form>
+        <div><h4>查找用户</h4></div>
+        <div>
+            <label>
+                <input type="text" id="findParam" placeholder="id, username, or realname" style="width: 280px">
+            </label>
+        </div>
+        <div>
+            <span><button type="button" id="getUserList">查找全部</button></span>
+            <span><button type="button" id="getUserById">id查找</button></span>
+            <span><button type="button" id="getUserByUsername">用户名查找</button></span>
+            <span><button type="button" id="getUserListByRealname">别名查找</button></span>
+        </div>
+    </form>
+</div>
+<br><br>
+<div align="center">
+    <form>
+        <div><h4>更新用户信息</h4></div>
+        <div>
+            <label>
+                <input type="text" id="updateId" placeholder="id" style="width: 200px">
+            </label><br>
+            <label>
+                <input type="text" id="updateUsername" placeholder="username" style="width: 200px">
+            </label><br>
+            <label>
+                <input type="text" id="updatePassword" placeholder="password" style="width: 200px">
+            </label><br>
+            <label>
+                <input type="text" id="updateRealname" placeholder="realname" style="width: 200px">
+            </label><br>
+            <label>
+                ROLE_ADMIN
+                <input type="checkbox" id="updateRoleAdmin">
+            </label><br>
+            <label>
+                ROLE_ADMIN
+                <input type="checkbox" id="updateRoleDba">
+            </label><br>
+            <label>
+                ROLE_ADMIN
+                <input type="checkbox" id="updateRoleUser">
+            </label><br>
+            <label>
+                <button type="button" id="updateUser" >更新</button>
+            </label>
+        </div>
+        <div align="center"><p id="updateState"></p></div>
+    </form>
+</div>
+<br><br>
+<div align="center">
+    <table>
+        <thead id="resultThead"></thead>
+        <tbody id="resultTbody"></tbody>
+    </table>
+</div>
+</body>
+</html>

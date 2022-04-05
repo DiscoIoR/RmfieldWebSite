@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserDataForDisplay {
-    private Integer userId;
+    private Integer id;
     private String username;
     private String realname;
     private List<Map<String,Object>> authorityDataList;
@@ -17,7 +17,7 @@ public class UserDataForDisplay {
     public UserDataForDisplay(){}
 
     public UserDataForDisplay(RfUser rfUser){
-        this.userId = rfUser.getId();
+        this.id = rfUser.getId();
         this.username = rfUser.getUsername();
         this.realname = rfUser.getRealname();
         this.authorityDataList = new ArrayList<>();
@@ -29,11 +29,11 @@ public class UserDataForDisplay {
         }
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
     public String getUsername() {
         return username;

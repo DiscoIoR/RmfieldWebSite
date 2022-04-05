@@ -16,6 +16,11 @@ public class UserManageController {
     @Autowired
     private UserManageService userManageService;
 
+    @GetMapping("rfuser")
+    public String userManage(){
+        return "admin/user-manage-panel";
+    }
+
     @GetMapping("/api/rfuser/list")
     @ResponseBody
     public JSONArray getRfUserList(@RequestParam(value = "realname",required = false) String realname){
@@ -27,13 +32,13 @@ public class UserManageController {
 
     @GetMapping("/api/rfuser")
     @ResponseBody
-    public JSONObject getRfUserById(
+    public JSONArray getRfUser(
             @RequestParam(value = "id",required = false) Integer id,
             @RequestParam(value = "username",required = false) String username
     ) {
-        if(id!=null&&username==null){
+        if(id!=null&&(username==null|| username.equals(""))){
             return userManageService.getUserById(id);
-        }else if (id==null&&username!=null){
+        }else if (id==null&&(username!=null && !username.equals(""))){
             return userManageService.getUserByUsername(username);
         }
         return null;
@@ -41,7 +46,7 @@ public class UserManageController {
 
     @PostMapping("/api/rfuser")
     @ResponseBody
-    public JSONObject updateRfUser(@RequestBody JSONObject jsonObject){
+    public JSONArray updateRfUser(@RequestBody JSONObject jsonObject){
         UserDataForUpdate dataForUpdate = JSON.parseObject(jsonObject.toString(), new TypeReference<>(){});
         if(userManageService.updateUser(dataForUpdate)){
             return userManageService.getUserById(dataForUpdate.getId());
