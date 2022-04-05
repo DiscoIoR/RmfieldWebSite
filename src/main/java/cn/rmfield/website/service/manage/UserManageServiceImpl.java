@@ -63,7 +63,7 @@ public class UserManageServiceImpl implements UserManageService{
     public Boolean updateUser(UserDataForUpdate dataForUpdate) {
         try {
             //校验id是否为空
-            if(dataForUpdate.getId()==null||(dataForUpdate.getUsername().equals(""))){
+            if(dataForUpdate.getId()==null){
                 return false;
             }
             RfUser rfUser = userRepository.getById(dataForUpdate.getId());
