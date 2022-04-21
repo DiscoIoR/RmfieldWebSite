@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsService {
+public class ArknightsStatisticsUpdateServiceImpl implements ArknightsStatisticsUpdateService {
     @Autowired
     private UserRepository userRepo;
     @Autowired
@@ -176,83 +176,4 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         }
         return true;
     }
-
-    @Override
-    public Map<String, Object> getData() {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        RfUser rfUser = userRepo.findByUsername(name);
-        ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
-        Map<String, Object> data = new LinkedHashMap<>();
-        data.put("username",as.getArknights_nickName());
-        data.put("uid",as.getArknights_uid());
-        data.put("six_num", as.getSixCount());
-        data.put("five_num", as.getFiveCount());
-        data.put("four_num", as.getFourCount());
-        data.put("three_num", as.getThreeCount());
-        data.put("pools",null);
-        data.put("dates",null);
-        data.put("diamond_income", as.getDiamondGrossIncome());
-        data.put("diamond_expenses", as.getDiamondGrossExpenses());
-        data.put("order_total",as.getTotalCost());
-        return data;
-    }
-
-    @Override
-    public List<Map<String, Object>> gachaDetail() {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        RfUser rfUser = userRepo.findByUsername(name);
-        this.as = asRepo.findByRfUser_id(rfUser.getId());
-        List<ArknightsGachaHistory> gachaHistoryList = gachaHistoryRepo.findByArknightsStatistics_id(as.getId());
-        List<Map<String, Object>> gachaDetailList = new ArrayList<>();
-        for(ArknightsGachaHistory gachaHistory:gachaHistoryList){
-            Map<String,Object> gachaDetail = new HashMap<>();
-            gachaDetail.put("ts",gachaHistory.getTs());
-            gachaDetail.put("pool",gachaHistory.getPool());
-            gachaDetail.put("name",gachaHistory.getName());
-            gachaDetail.put("rarity",gachaHistory.getRarity());
-            gachaDetail.put("isNew",gachaHistory.getIsNew());
-            gachaDetailList.add(gachaDetail);
-        }
-        return gachaDetailList;
-    }
-
-    @Override
-    public List<Map<String, Object>> diamondDetail() {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        RfUser rfUser = userRepo.findByUsername(name);
-        this.as = asRepo.findByRfUser_id(rfUser.getId());
-        List<ArknightsDiamondHistory> diamondHistoryList = diamondHistoryRepo.findByArknightsStatistics_id(as.getId());
-        List<Map<String, Object>> diamondDetailList = new ArrayList<>();
-        for(ArknightsDiamondHistory diamondHistory:diamondHistoryList){
-            Map<String,Object> diamondDetail = new HashMap<>();
-            diamondDetail.put("ts",diamondHistory.getTs());
-            diamondDetail.put("operation",diamondHistory.getOperation());
-            diamondDetail.put("platform",diamondHistory.getPlatform());
-            diamondDetail.put("changeNum",diamondHistory.getChangeNum());
-            diamondDetail.put("currentNum",diamondHistory.getCurrentNum());
-            diamondDetailList.add(diamondDetail);
-        }
-        return diamondDetailList;
-    }
-
-    @Override
-    public List<Map<String, Object>> orderDetail() {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        RfUser rfUser = userRepo.findByUsername(name);
-        this.as = asRepo.findByRfUser_id(rfUser.getId());
-        List<ArknightsOrderHistory> orderHistoryList = orderHistoryRepo.findByArknightsStatistics_id(as.getId());
-        List<Map<String, Object>> orderDetailList = new ArrayList<>();
-        for(ArknightsOrderHistory orderHistory:orderHistoryList){
-            Map<String,Object> orderDetail = new HashMap<>();
-            orderDetail.put("orderId",orderHistory.getOrderId());
-            orderDetail.put("platform",orderHistory.getPlatform());
-            orderDetail.put("amount",orderHistory.getAmount());
-            orderDetail.put("productName",orderHistory.getProductName());
-            orderDetail.put("payTime",orderHistory.getPayTime());
-            orderDetailList.add(orderDetail);
-        }
-        return orderDetailList;
-    }
-
-
 }

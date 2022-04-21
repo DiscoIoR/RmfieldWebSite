@@ -1,6 +1,7 @@
 package cn.rmfield.website.controller.user;
 
-import cn.rmfield.website.service.arknights.ArknightsStatisticsService;
+import cn.rmfield.website.service.arknights.ArknightsStatisticsPushService;
+import cn.rmfield.website.service.arknights.ArknightsStatisticsUpdateService;
 import cn.rmfield.website.utils.ResponseResult;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import java.util.Map;
 @PreAuthorize("hasRole('USER')")
 public class ArknightsStatisticsController {
     @Autowired
-    ArknightsStatisticsService akService;
+    ArknightsStatisticsUpdateService updateService;
+    @Autowired
+    ArknightsStatisticsPushService pushService;
 
 
 
@@ -24,7 +27,7 @@ public class ArknightsStatisticsController {
     @ResponseBody
     public ResponseResult updateData(@RequestBody JSONObject jsonToken) {
         //更新数据
-        Boolean tokenUpdateSuccess = akService.updateData((String) jsonToken.get("token"));
+        Boolean tokenUpdateSuccess = updateService.updateData((String) jsonToken.get("token"));
         if (!tokenUpdateSuccess) {
             return new ResponseResult(5,"更新数据失败");
         } else {
@@ -37,7 +40,7 @@ public class ArknightsStatisticsController {
     @GetMapping("/general")
     public ResponseResult getData() {
         try {
-            return new ResponseResult(0,"OK",akService.getData());
+            return new ResponseResult(0,"OK", pushService.getGeneral());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseResult(5,"获取数据失败");
@@ -48,7 +51,7 @@ public class ArknightsStatisticsController {
     public ResponseResult gacha(){
         try {
             Map<String,List<Map<String,Object>>> gachaListMap = new HashMap<>();
-            gachaListMap.put("gacha_list",akService.gachaDetail());
+            gachaListMap.put("gacha_list", pushService.gachaDetail());
             return new ResponseResult(0,"OK",gachaListMap);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,7 +63,7 @@ public class ArknightsStatisticsController {
     public ResponseResult diamond(){
         try {
             Map<String,List<Map<String,Object>>> diamondListMap = new HashMap<>();
-            diamondListMap.put("diamond_list",akService.diamondDetail());
+            diamondListMap.put("diamond_list", pushService.diamondDetail());
             return new ResponseResult(0,"OK",diamondListMap);
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +75,7 @@ public class ArknightsStatisticsController {
     public ResponseResult order(){
         try {
             Map<String,List<Map<String,Object>>> orderListMap = new HashMap<>();
-            orderListMap.put("order_list",akService.orderDetail());
+            orderListMap.put("order_list", pushService.orderDetail());
             return new ResponseResult(0,"OK",orderListMap);
         } catch (Exception e) {
             e.printStackTrace();
