@@ -1,69 +1,82 @@
 package cn.rmfield.website.controller.user;
 
 import cn.rmfield.website.service.arknights.ArknightsStatisticsService;
+import cn.rmfield.website.utils.ResponseResult;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
-@RequestMapping("/user")
+@RestController
+@RequestMapping("/user/api/arknights")
+@PreAuthorize("hasRole('USER')")
 public class ArknightsStatisticsController {
     @Autowired
     ArknightsStatisticsService akService;
 
-    //概况页面
-    @GetMapping("/arknights-statistics")
-    public String arknightsStatisstics() {
-        return "user/arknights-statistics";
-    }
 
-    @PostMapping("/api/arknights-statistics/general")
+
+    @PostMapping("")
     @ResponseBody
-    public Map<String,String> updateData(@RequestBody JSONObject jsonToken) {
+    public ResponseResult updateData(@RequestBody JSONObject jsonToken) {
         //更新数据
         Boolean tokenUpdateSuccess = akService.updateData((String) jsonToken.get("token"));
-        Map<String,String> result = new HashMap<>();
         if (!tokenUpdateSuccess) {
-            result.put("updateResult","更新数据失败,可能是token不正确");
+            return new ResponseResult(5,"更新数据失败");
         } else {
-            result.put("updateResult","更新数据成功");
+            return new ResponseResult(0,"OK");
         }
-        return result;
     }
 
-    @GetMapping("/api/arknights-statistics/general")
-    @ResponseBody
-    public Map<String, Object> getData() {
-        //查询数据
-        return akService.getData();
+
+
+    @GetMapping("/general")
+    public ResponseResult getData() {
+        try {
+            return new ResponseResult(0,"OK",akService.getData());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(5,"获取数据失败");
+        }
     }
 
-    //详细数据页面
-    @GetMapping("/arknight-statistics/details")
-    public String details(){
-        return "user/arknights-statistics-details";
+    @GetMapping("/gacha")
+    public ResponseResult gacha(){
+        try {
+            Map<String,List<Map<String,Object>>> gachaListMap = new HashMap<>();
+            gachaListMap.put("gacha_list",akService.gachaDetail());
+            return new ResponseResult(0,"OK",gachaListMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(5,"获取数据失败");
+        }
     }
 
-    @GetMapping("/api/arknights-statistics/gacha")
-    @ResponseBody
-    public List<Map<String,Object>> gacha(){
-        return akService.gachaDetail();
+    @GetMapping("/diamond")
+    public ResponseResult diamond(){
+        try {
+            Map<String,List<Map<String,Object>>> diamondListMap = new HashMap<>();
+            diamondListMap.put("diamond_list",akService.diamondDetail());
+            return new ResponseResult(0,"OK",diamondListMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(5,"获取数据失败");
+        }
     }
 
-    @GetMapping("/api/arknights-statistics/diamond")
-    @ResponseBody
-    public List<Map<String,Object>> diamond(){
-        return akService.diamondDetail();
-    }
-
-    @GetMapping("/api/arknights-statistics/order")
-    @ResponseBody
-    public List<Map<String,Object>> order(){
-        return akService.orderDetail();
+    @GetMapping("/order")
+    public ResponseResult order(){
+        try {
+            Map<String,List<Map<String,Object>>> orderListMap = new HashMap<>();
+            orderListMap.put("order_list",akService.orderDetail());
+            return new ResponseResult(0,"OK",orderListMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(5,"获取数据失败");
+        }
     }
 }

@@ -182,21 +182,18 @@ public class ArknightsStatisticsServiceImpl implements ArknightsStatisticsServic
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         RfUser rfUser = userRepo.findByUsername(name);
         ArknightsStatistics as = asRepo.findByRfUser_id(rfUser.getId());
-        Map<String, Object> data = new HashMap<>();
-        data.put("nickName",as.getArknights_nickName());
-        data.put("akUid",as.getArknights_uid());
-        data.put("sixCount", as.getSixCount());
-        data.put("fiveCount", as.getFiveCount());
-        data.put("fourCount", as.getFourCount());
-        data.put("threeCount", as.getThreeCount());
-        data.put("sixRate", as.getSixRate());
-        data.put("fiveRate", as.getFiveRate());
-        data.put("fourRate", as.getFourRate());
-        data.put("threeRate", as.getThreeRate());
-        data.put("totalCount", as.getTotalCount());
-        data.put("grossIncome", as.getDiamondGrossIncome());
-        data.put("grossExpenses", as.getDiamondGrossExpenses());
-        data.put("totalCost",as.getTotalCost());
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("username",as.getArknights_nickName());
+        data.put("uid",as.getArknights_uid());
+        data.put("six_num", as.getSixCount());
+        data.put("five_num", as.getFiveCount());
+        data.put("four_num", as.getFourCount());
+        data.put("three_num", as.getThreeCount());
+        data.put("pools",null);
+        data.put("dates",null);
+        data.put("diamond_income", as.getDiamondGrossIncome());
+        data.put("diamond_expenses", as.getDiamondGrossExpenses());
+        data.put("order_total",as.getTotalCost());
         return data;
     }
 

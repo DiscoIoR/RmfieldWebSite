@@ -84,6 +84,26 @@ public class ArknightsStatistics implements Serializable {
     )
     private List<ArknightsDiamondHistory> arknightsDiamondHistories;
 
+
+    public ArknightsStatistics(){
+        this.arknights_nickName = "unknow";
+        this.arknights_uid = "unknow";
+        this.totalCount = 0;
+        this.sixCount = 0;
+        this.fiveCount = 0;
+        this.fourCount = 0;
+        this.threeCount = 0;
+        this.sixRate = 0D;
+        this.fiveRate = 0D;
+        this.fourRate = 0D;
+        this.threeRate = 0D;
+        this.diamondGrossIncome = 0;
+        this.diamondGrossExpenses = 0;
+        this.totalCost = 0;
+    }
+
+
+
     public int getId() {
         return id;
     }
