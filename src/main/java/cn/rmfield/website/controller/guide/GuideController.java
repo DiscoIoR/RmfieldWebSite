@@ -29,4 +29,10 @@ public class GuideController {
     public ResponseResult logout(){
         return guideService.logout();
     }
+
+    @CrossOrigin
+    @GetMapping("/api/islogin")
+    public Boolean islogin(){
+        return true;
+    }
 }
