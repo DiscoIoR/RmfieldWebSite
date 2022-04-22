@@ -1,6 +1,9 @@
 package cn.rmfield.website.utils;
 
+import com.alibaba.fastjson.annotation.JSONType;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /*
 * state:0   is Login
@@ -9,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 * state:10   failed,unknow error
 */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JSONType(orders = {"status","msg","data"})
 public class ResponseResult {
     /**
      * state:0   is Login
@@ -16,14 +20,17 @@ public class ResponseResult {
      * state:5   auth error
      * state:10   failed,unknow error
      */
+    @JsonProperty(index = 1)
     private Integer status;
     /**
      * 提示信息，如果有错误时，前端可以获取该字段进行提示
      */
+    @JsonProperty(index = 2)
     private String msg;
     /**
      * 数据
      */
+    @JsonProperty(index = 3)
     private Object data;
 
     public ResponseResult(Integer status,String msg){

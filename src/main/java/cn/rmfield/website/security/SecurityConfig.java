@@ -17,6 +17,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private  JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    @Autowired
+    private AuthenticationEntryPointImpl authenticationEntryPointImpl;
+    @Autowired
+    private AccessDeniedHandlerImpl accessDeniedHandlerImpl;
 
     //创建BCryptPasswordEncoder注入容器
     @Bean
@@ -48,6 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPointImpl)
+                .accessDeniedHandler(accessDeniedHandlerImpl);
     }
 }
 
