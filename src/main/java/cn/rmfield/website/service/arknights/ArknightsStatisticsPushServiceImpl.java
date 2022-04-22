@@ -78,7 +78,7 @@ public class ArknightsStatisticsPushServiceImpl implements ArknightsStatisticsPu
             //获取第一条记录的 year-month
             currentTimestamp = gachaHistoryList.get(0).getTs().longValue();
             cal.setTimeInMillis(currentTimestamp * 1000);
-            currentDateYM = Integer.toString(cal.get(Calendar.YEAR)) + (cal.get(Calendar.MONTH) + 1);
+            currentDateYM = Integer.toString(cal.get(Calendar.YEAR)) + "." + (cal.get(Calendar.MONTH) + 1);
             currentDateNum = 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +88,7 @@ public class ArknightsStatisticsPushServiceImpl implements ArknightsStatisticsPu
             //获取每一条记录的 year-month
             timestamp = gachaHistory.getTs().longValue();
             cal.setTimeInMillis(timestamp * 1000);
-            dateYM = Integer.toString(cal.get(Calendar.YEAR)) + (cal.get(Calendar.MONTH) + 1);
+            dateYM = Integer.toString(cal.get(Calendar.YEAR)) + "." + (cal.get(Calendar.MONTH) + 1);
 
             if (currentDateYM.equals(dateYM)) {
                 currentDateNum++;
@@ -100,7 +100,7 @@ public class ArknightsStatisticsPushServiceImpl implements ArknightsStatisticsPu
                 //更新 year-month
                 currentTimestamp = gachaHistory.getTs().longValue();
                 cal.setTimeInMillis(currentTimestamp * 1000);
-                currentDateYM = Integer.toString(cal.get(Calendar.YEAR)) + (cal.get(Calendar.MONTH) + 1);
+                currentDateYM = Integer.toString(cal.get(Calendar.YEAR)) + "." + (cal.get(Calendar.MONTH) + 1);
                 currentDateNum = 1;
             }
         }
@@ -117,6 +117,9 @@ public class ArknightsStatisticsPushServiceImpl implements ArknightsStatisticsPu
         LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         this.as = loginUser.getRfUser().getArknightsStatistics();
         List<ArknightsGachaHistory> gachaHistoryList = as.getArknightsGachaHistories();
+        //调整取出的数据顺序（新->旧）
+        Collections.reverse(gachaHistoryList);
+
         List<Map<String, Object>> gachaDetailList = new ArrayList<>();
         for (ArknightsGachaHistory gachaHistory : gachaHistoryList) {
             Map<String, Object> gachaDetail = new HashMap<>();
@@ -135,6 +138,9 @@ public class ArknightsStatisticsPushServiceImpl implements ArknightsStatisticsPu
         LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         this.as = loginUser.getRfUser().getArknightsStatistics();
         List<ArknightsDiamondHistory> diamondHistoryList = as.getArknightsDiamondHistories();
+        //调整取出的数据顺序（新->旧）
+        Collections.reverse(diamondHistoryList);
+
         List<Map<String, Object>> diamondDetailList = new ArrayList<>();
         for (ArknightsDiamondHistory diamondHistory : diamondHistoryList) {
             Map<String, Object> diamondDetail = new HashMap<>();
@@ -153,6 +159,9 @@ public class ArknightsStatisticsPushServiceImpl implements ArknightsStatisticsPu
         LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         this.as = loginUser.getRfUser().getArknightsStatistics();
         List<ArknightsOrderHistory> orderHistoryList = as.getArknightsOrderHistories();
+        //调整取出的数据顺序（新->旧）
+        Collections.reverse(orderHistoryList);
+
         List<Map<String, Object>> orderDetailList = new ArrayList<>();
         for (ArknightsOrderHistory orderHistory : orderHistoryList) {
             Map<String, Object> orderDetail = new HashMap<>();

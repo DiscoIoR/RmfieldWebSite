@@ -10,6 +10,9 @@ import cn.rmfield.website.repository.arknights.ArknightsGachaHistoryRepository;
 import cn.rmfield.website.repository.arknights.ArknightsOrderHistoryRepository;
 import cn.rmfield.website.repository.arknights.ArknightsStatisticsRepostiory;
 import cn.rmfield.website.repository.UserRepository;
+import cn.rmfield.website.security.LoginUser;
+import cn.rmfield.website.utils.RedisCache;
+import cn.rmfield.website.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,11 +31,13 @@ public class ArknightsStatisticsUpdateServiceImpl implements ArknightsStatistics
     private ArknightsDiamondHistoryRepository diamondHistoryRepo;
     @Autowired
     private ArknightsOrderHistoryRepository orderHistoryRepo;
+    @Autowired
+    RedisCache redisCache;
 
     private ArknightsStatistics as;
 
     @Override
-    public Boolean updateData(String token) {
+    public ResponseResult updateData(String token) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         RfUser rfUser = userRepo.findByUsername(name);
         this.as = asRepo.findByRfUser_id(rfUser.getId());
@@ -41,7 +46,29 @@ public class ArknightsStatisticsUpdateServiceImpl implements ArknightsStatistics
         Boolean diamondResult = updateDiamond(token);
         Boolean orderResult = updateOrder(token);
         asRepo.save(as);
-        return userinfoResult && gachaResult && diamondResult && orderResult;
+        if(userinfoResult && gachaResult && diamondResult && orderResult) {
+            //更新redis中的方舟统计数据
+            int rfUserId = 0;
+            try {
+                LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                rfUserId = loginUser.getRfUser().getId();
+                loginUser.getRfUser().setArknightsStatistics(as);
+                redisCache.setCacheObject("login:" + rfUserId, loginUser);
+                return new ResponseResult(0,"OK");
+            } catch (Exception e) {
+                e.printStackTrace();
+                //尝试清除缓存，解除登录状态
+                try {
+                    redisCache.deleteObject("login:" + rfUserId);
+                    return new ResponseResult(5,"更新缓存失败");
+                }catch (Exception e2){
+                    e2.printStackTrace();
+                    return new ResponseResult(5,"更新缓存失败,清除缓存失败");
+                }
+            }
+        }else {
+            return new ResponseResult(5,"更新数据失败");
+        }
     }
 
     public Boolean updateGacha(String token) {
@@ -64,6 +91,8 @@ public class ArknightsStatisticsUpdateServiceImpl implements ArknightsStatistics
         List<ArknightsGachaDataEach> gachaDataEachList_New;
         try {
             gachaDataEachList_New = gachaData_New.getArknightsStatisticsDataEaches();
+            //调整存入的数据顺序（旧->新）
+            Collections.reverse(gachaDataEachList_New);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -107,6 +136,8 @@ public class ArknightsStatisticsUpdateServiceImpl implements ArknightsStatistics
         List<ArknightsDiamondDataEach> diamondDataEachList_New;
         try {
             diamondDataEachList_New = diamondData_New.getDiamondDataEachList();
+            //调整存入的数据顺序（旧->新）
+            Collections.reverse(diamondDataEachList_New);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -142,6 +173,8 @@ public class ArknightsStatisticsUpdateServiceImpl implements ArknightsStatistics
         List<ArknightsOrderDataEach> orderDataEachList_New;
         try {
             orderDataEachList_New = orderData_New.getOrderDataEachList();
+            //调整存入的数据顺序（旧->新）
+            Collections.reverse(orderDataEachList_New);
         }catch (Exception e){
             e.printStackTrace();
             return false;

@@ -1,5 +1,7 @@
 package cn.rmfield.website.service.arknights;
 
+import cn.rmfield.website.utils.ResponseResult;
+
 public interface ArknightsStatisticsUpdateService {
-    Boolean updateData(String token);
+    ResponseResult updateData(String token);
 }

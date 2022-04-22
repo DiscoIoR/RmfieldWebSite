@@ -22,20 +22,12 @@ public class ArknightsStatisticsController {
     ArknightsStatisticsPushService pushService;
 
 
-
     @PostMapping("")
     @ResponseBody
     public ResponseResult updateData(@RequestBody JSONObject jsonToken) {
         //更新数据
-        Boolean tokenUpdateSuccess = updateService.updateData((String) jsonToken.get("token"));
-        if (!tokenUpdateSuccess) {
-            return new ResponseResult(5,"更新数据失败");
-        } else {
-            return new ResponseResult(0,"OK");
-        }
+        return updateService.updateData((String) jsonToken.get("token"));
     }
-
-
 
     @GetMapping("/general")
     public ResponseResult getData() {
