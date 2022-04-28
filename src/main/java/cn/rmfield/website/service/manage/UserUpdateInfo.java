@@ -1,12 +1,17 @@
 package cn.rmfield.website.service.manage;
 
-public class UserDataForUpdate {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class UserUpdateInfo {
     private Integer id;
     private String username;
     private String realname;
     private String password;
+    @JsonProperty("ROLE_ADMIN")
     private Boolean ROLE_ADMIN;
+    @JsonProperty("ROLE_DBA")
     private Boolean ROLE_DBA;
+    @JsonProperty("ROLE_USER")
     private Boolean ROLE_USER;
 
     public Integer getId() {
