@@ -1,60 +1,85 @@
 package cn.rmfield.website.controller.admin;
 
+import cn.rmfield.website.entity.RfUser;
 import cn.rmfield.website.service.manage.UserDataForUpdate;
 import cn.rmfield.website.service.manage.UserManageService;
+import cn.rmfield.website.utils.ResponseResult;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //TODO 和新版本前端对接
 
-@Controller
-@RequestMapping("/admin")
-@PreAuthorize("hasRole('ADMIN')")
+@RestController
+@RequestMapping("/admin/api")
+@PreAuthorize("hasRole('USER')")
 public class UserManageController {
     @Autowired
     private UserManageService userManageService;
 
-    @GetMapping("rfuser")
-    public String userManage(){
-        return "admin/user-manage-panel";
-    }
 
-    @GetMapping("/api/rfuser/list")
-    @ResponseBody
-    public JSONArray getRfUserList(@RequestParam(value = "realname",required = false) String realname){
-        if(realname!=null){
-            return userManageService.getUserListByRealname(realname);
-        }
-        return userManageService.getUserList();
-    }
-
-    @GetMapping("/api/rfuser")
-    @ResponseBody
-    public JSONArray getRfUser(
-            @RequestParam(value = "id",required = false) Integer id,
-            @RequestParam(value = "username",required = false) String username
+    @GetMapping("/user-ctrl")
+    public ResponseResult getRfUser(
+            @RequestParam(value = "id",required = false) String id_str,
+            @RequestParam(value = "username",required = false) String username,
+            @RequestParam(value = "realname",required = false) String realname
     ) {
-        if(id!=null&&(username==null|| username.equals(""))){
-            return userManageService.getUserById(id);
-        }else if (id==null&&(username!=null && !username.equals(""))){
-            return userManageService.getUserByUsername(username);
+        List<RfUser> rfUserList = null;
+        try {
+            id_str = id_str.trim();
+            username = username.trim();
+            realname = realname.trim();
+
+            Integer id = null;
+            if (!id_str.equals("")) {
+                try {
+                    id = Integer.parseInt(id_str);
+                }catch (RuntimeException e){
+                    e.printStackTrace();
+                    return new ResponseResult(5,"解析id时发生错误");
+                }
+            }
+
+            //TODO userManageService.getUserById(id);
+            if(id != null){
+                rfUserList = userManageService.getUserById(id);
+                return new ResponseResult(0,"OK",rfUserList);
+            }
+
+            //TODO userManageService.getUserByUsername(username);
+            if(!username.equals("")){
+                rfUserList = userManageService.getUserByUsername(username);
+                return new ResponseResult(0,"OK",rfUserList);
+            }
+
+            //TODO getUserByRealname(realname);
+            if(!realname.equals("")){
+                rfUserList = userManageService.getUserByRealname(realname);
+                return new ResponseResult(0,"OK",rfUserList);
+            }
+
+            //TODO getUserList();
+            rfUserList = userManageService.getUserList();
+            return new ResponseResult(0,"OK",rfUserList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(0,"OK",rfUserList);
         }
-        return null;
     }
 
-    @PostMapping("/api/rfuser")
-    @ResponseBody
-    public JSONArray updateRfUser(@RequestBody JSONObject jsonObject){
+
+    @PutMapping("/user-ctrl")
+    public ResponseResult updateRfUser(@RequestBody JSONObject jsonObject){
         UserDataForUpdate dataForUpdate = JSON.parseObject(jsonObject.toString(), new TypeReference<>(){});
         if(userManageService.updateUser(dataForUpdate)){
-            return userManageService.getUserById(dataForUpdate.getId());
+            userManageService.getUserById(dataForUpdate.getId());
         }
-        return null;
+        return new ResponseResult(0,"",null);
     }
 }

@@ -3,14 +3,13 @@ package cn.rmfield.website.service.manage;
 import cn.rmfield.website.entity.Authority;
 import cn.rmfield.website.entity.RfUser;
 import cn.rmfield.website.repository.UserRepository;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserManageServiceImpl implements UserManageService{
@@ -18,45 +17,60 @@ public class UserManageServiceImpl implements UserManageService{
     private UserRepository userRepository;
 
     @Override
-    public JSONArray getUserList() {
+    public List<RfUser> getUserList() {
         List<RfUser> rfUserList = userRepository.findAll();
-        List<UserDataForDisplay> dataForDisplayList = new ArrayList<>();
         for (RfUser rfUser:rfUserList){
-            dataForDisplayList.add(new UserDataForDisplay(rfUser));
+            setFieldNull(rfUser);
         }
-        return JSONArray.parseArray(JSON.toJSONString(dataForDisplayList));
+        return rfUserList;
     }
 
     @Override
-    public JSONArray getUserById(Integer id) {
-        RfUser rfUser = userRepository.getById(id);
-        List<UserDataForDisplay> dataForDisplayList = new ArrayList<>();
-        dataForDisplayList.add(new UserDataForDisplay(rfUser));
-        return JSONArray.parseArray(JSON.toJSONString(dataForDisplayList));
-    }
-
-    @Override
-    public JSONArray getUserByUsername(String username) {
-        RfUser rfUser = userRepository.findByUsername(username);
-        if(rfUser==null){
-            return null;
+    public List<RfUser> getUserById(Integer id) {
+        List<RfUser> rfUserList = new ArrayList<>();
+        Optional<RfUser> rfUserOptional = userRepository.findById(id);
+        if (rfUserOptional.isPresent()) {
+            RfUser rfUser = rfUserOptional.get();
+            setFieldNull(rfUser);
+            rfUserList.add(rfUser);
+            return rfUserList;
         }
-        List<UserDataForDisplay> dataForDisplayList = new ArrayList<>();
-        dataForDisplayList.add(new UserDataForDisplay(rfUser));
-        return JSONArray.parseArray(JSON.toJSONString(dataForDisplayList));
+        return rfUserList;
     }
 
     @Override
-    public JSONArray getUserListByRealname(String realname) {
+    public List<RfUser> getUserByUsername(String username) {
+        List<RfUser> rfUserList = new ArrayList<>();
+        RfUser rfUser;
+        try {
+            rfUser = userRepository.findByUsername(username);
+            if (rfUser == null){
+                return rfUserList;
+            }
+            setFieldNull(rfUser);
+            rfUserList.add(rfUser);
+            return rfUserList;
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            return rfUserList;
+        }
+    }
+
+    @Override
+    public List<RfUser> getUserByRealname(String realname) {
         List<RfUser> rfUserList = userRepository.findByRealname(realname);
-        List<UserDataForDisplay> dataForDisplayList = new ArrayList<>();
-        for (RfUser rfUser:rfUserList){
-            dataForDisplayList.add(new UserDataForDisplay(rfUser));
+        for (RfUser rfUser : rfUserList) {
+            setFieldNull(rfUser);
         }
-        if(dataForDisplayList.size()==0){
-            return null;
+        return rfUserList;
+    }
+
+    private void setFieldNull(RfUser rfUser){
+        rfUser.setPassword(null);
+        rfUser.setArknightsStatistics(null);
+        for(Authority authority:rfUser.getAuthorityList()){
+            authority.setUserList(null);
         }
-        return JSONArray.parseArray(JSON.toJSONString(dataForDisplayList));
     }
 
     @Override

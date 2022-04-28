@@ -3,6 +3,7 @@ package cn.rmfield.website.entity;
 import cn.rmfield.website.entity.arknights.ArknightsStatistics;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,12 +11,13 @@ import java.util.List;
 
 @Entity
 @Table(name="user")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class RfUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String username;
     private String password;
     private String realname;
@@ -50,10 +52,10 @@ public class RfUser implements Serializable {
     @Transient
     private String invitationcode;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getUsername() {

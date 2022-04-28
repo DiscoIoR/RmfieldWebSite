@@ -1,13 +1,14 @@
 package cn.rmfield.website.service.manage;
 
+import cn.rmfield.website.entity.RfUser;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+
+import java.util.List;
 
 public interface UserManageService {
-    JSONArray getUserList();
-    JSONArray getUserById(Integer id);
-    JSONArray getUserByUsername(String username);
-    JSONArray getUserListByRealname(String realname);
+    List<RfUser> getUserList();
+    List<RfUser> getUserById(Integer id);
+    List<RfUser> getUserByUsername(String username);
+    List<RfUser> getUserByRealname(String realname);
     Boolean updateUser(UserDataForUpdate dataForUpdate);
-    //Boolean deleteUser(String username);
 }
