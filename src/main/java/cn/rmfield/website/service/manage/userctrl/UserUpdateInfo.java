@@ -1,4 +1,4 @@
-package cn.rmfield.website.service.manage;
+package cn.rmfield.website.service.manage.userctrl;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

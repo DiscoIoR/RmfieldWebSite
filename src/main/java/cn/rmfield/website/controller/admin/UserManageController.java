@@ -1,8 +1,8 @@
 package cn.rmfield.website.controller.admin;
 
 import cn.rmfield.website.entity.RfUser;
-import cn.rmfield.website.service.manage.UserUpdateInfo;
-import cn.rmfield.website.service.manage.UserManageService;
+import cn.rmfield.website.service.manage.userctrl.UserUpdateInfo;
+import cn.rmfield.website.service.manage.userctrl.UserManageService;
 import cn.rmfield.website.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,4 +1,4 @@
-package cn.rmfield.website.service.manage;
+package cn.rmfield.website.service.manage.userctrl;
 
 import cn.rmfield.website.entity.RfUser;
 import cn.rmfield.website.utils.ResponseResult;
