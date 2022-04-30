@@ -10,7 +10,7 @@
     </parent>
     <groupId>cn.rmfield</groupId>
     <artifactId>RmfieldWebSite</artifactId>
-    <version>0.9.0</version>
+    <version>1.0.0</version>
     <name>RmfieldWebSite</name>
     <description>RmfieldWebSite</description>
     <properties>
